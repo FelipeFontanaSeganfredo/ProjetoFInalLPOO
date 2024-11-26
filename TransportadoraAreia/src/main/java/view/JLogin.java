@@ -6,6 +6,7 @@ package view;
 
 import javax.swing.JOptionPane;
 import controller.LoginController;
+import config.SessaoUsuario;
 
 /**
  *
@@ -128,24 +129,22 @@ public class JLogin extends javax.swing.JFrame {
 
     private void BotaoEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoEntrarActionPerformed
         LoginController loginController = new LoginController();
-        String usuario = CampoUsuario.getText();
-        String senha = new String(CampoSenha.getPassword());
+    String usuario = CampoUsuario.getText();
+    String senha = new String(CampoSenha.getPassword());
 
-        if (usuario.isEmpty() || senha.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos.");
-        } else if (loginController.autenticar(usuario, senha)) {
-            if (loginController.StatusAdm(usuario))
-            {
-                new JDashboardAdmin().setVisible(true);
-            }
-            else
-            {
-                new JDashboardMotorista().setVisible(true);
-            }
-            this.dispose(); // Fecha a tela de login
+    if (usuario.isEmpty() || senha.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos.");
+    } else if (loginController.autenticar(usuario, senha)) {
+        // Redireciona com base no tipo de usuário
+        if (SessaoUsuario.getInstance().getTipoUsuario().equalsIgnoreCase("administrador")) {
+            new JDashboardAdmin().setVisible(true);
         } else {
-            JOptionPane.showMessageDialog(this, "Usuário ou senha incorretos.", "Erro", JOptionPane.ERROR_MESSAGE);
+            new JDashboardMotorista().setVisible(true);
         }
+        this.dispose(); // Fecha a tela de login
+    } else {
+        JOptionPane.showMessageDialog(this, "Usuário ou senha incorretos.", "Erro", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_BotaoEntrarActionPerformed
 
     private void CampoSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CampoSenhaActionPerformed
