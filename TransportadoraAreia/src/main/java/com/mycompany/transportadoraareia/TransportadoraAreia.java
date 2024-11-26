@@ -1,8 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
-
 package com.mycompany.transportadoraareia;
+
+import view.*;
 
 /**
  *
@@ -11,6 +9,8 @@ package com.mycompany.transportadoraareia;
 public class TransportadoraAreia {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        java.awt.EventQueue.invokeLater(() -> {
+            new JMainFrame().setVisible(true);
+        });
     }
 }
