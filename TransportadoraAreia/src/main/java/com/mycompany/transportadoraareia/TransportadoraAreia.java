@@ -2,6 +2,7 @@ package com.mycompany.transportadoraareia;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.Persistence;
 import model.Usuario;
 import view.JMainFrame;
@@ -17,33 +18,16 @@ public class TransportadoraAreia {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("meu-persistence-unit");
         EntityManager em = emf.createEntityManager();
 
-        // Inserir usuários no banco de dados
         try {
             em.getTransaction().begin();
 
-            // Criação de instâncias de usuários
-            Usuario root = new Usuario();
-            root.setCpf(null); // Root não possui CPF
-            root.setTipo("administrador");
-            root.setSenha(criptografarSenha("1234"));
-
-            Usuario motorista1 = new Usuario();
-            motorista1.setCpf("632.273.280-38");
-            motorista1.setTipo("motorista");
-            motorista1.setSenha(criptografarSenha("1234"));
-
-            Usuario motorista2 = new Usuario();
-            motorista2.setCpf("123.456.789-00");
-            motorista2.setTipo("motorista");
-            motorista2.setSenha(criptografarSenha("abcd"));
-
-            // Persistir no banco
-            em.persist(root);
-            em.persist(motorista1);
-            em.persist(motorista2);
+            // Inserir usuários se não existirem
+            inserirUsuarioSeNaoExistir(em, null, "administrador", "1234"); // Root
+            inserirUsuarioSeNaoExistir(em, "632.273.280-38", "motorista", "1234"); // Motorista 1
+            inserirUsuarioSeNaoExistir(em, "123.456.789-00", "motorista", "abcd"); // Motorista 2
 
             em.getTransaction().commit();
-            System.out.println("Usuários inseridos com sucesso!");
+            System.out.println("Verificação e inserção de usuários concluída!");
         } catch (Exception e) {
             em.getTransaction().rollback();
             e.printStackTrace();
@@ -56,6 +40,29 @@ public class TransportadoraAreia {
         java.awt.EventQueue.invokeLater(() -> {
             new JMainFrame().setVisible(true);
         });
+    }
+
+    /**
+     * Método para inserir um usuário se ele não existir no banco de dados.
+     */
+    private static void inserirUsuarioSeNaoExistir(EntityManager em, String cpf, String tipo, String senha) {
+        try {
+            // Verificar se o usuário já existe
+            Usuario usuarioExistente = em.createQuery(
+                    "SELECT u FROM Usuario u WHERE (:cpf IS NULL AND u.cpf IS NULL) OR u.cpf = :cpf", Usuario.class)
+                    .setParameter("cpf", cpf)
+                    .getSingleResult();
+
+            System.out.println("Usuário já existe: " + (cpf == null ? "root" : cpf));
+        } catch (NoResultException e) {
+            // Usuário não existe, criar e persistir
+            Usuario novoUsuario = new Usuario();
+            novoUsuario.setCpf(cpf);
+            novoUsuario.setTipo(tipo);
+            novoUsuario.setSenha(criptografarSenha(senha));
+            em.persist(novoUsuario);
+            System.out.println("Usuário inserido: " + (cpf == null ? "root" : cpf));
+        }
     }
 
     /**
