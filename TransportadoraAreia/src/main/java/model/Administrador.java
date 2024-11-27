@@ -22,9 +22,8 @@ public class Administrador extends Pessoa{
     }
     
 // métodos especiais
-    
-    // cadastraPedido();
-    // cadastraCliente();
-    // cadastraMotorista();
-    // agendaViagem();
+    // public Pedido cadastraPedido(){}
+    // public Cliente cadastraCliente(){}
+    // public Motorista cadastraMotorista(){}
+    // public Viagem agendaViagem(){}
 }
