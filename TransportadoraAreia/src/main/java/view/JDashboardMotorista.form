@@ -16,6 +16,10 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Mudar senha"/>
           </Properties>
+          <Events>
+            <EventHandler event="menuKeyPressed" listener="javax.swing.event.MenuKeyListener" parameters="javax.swing.event.MenuKeyEvent" handler="MenuMudarSenhaMenuKeyPressed"/>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="MenuMudarSenhaMouseClicked"/>
+          </Events>
         </Menu>
       </SubComponents>
     </Menu>

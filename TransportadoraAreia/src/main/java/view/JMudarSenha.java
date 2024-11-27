@@ -4,17 +4,29 @@
  */
 package view;
 
+import config.SessaoUsuario;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.Persistence;
+import jakarta.persistence.Persistence;
+import javax.swing.JOptionPane;
+import model.Usuario;
+
 /**
  *
  * @author User PC
  */
 public class JMudarSenha extends javax.swing.JFrame {
+    
+    private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("meu-persistence-unit");
 
     /**
      * Creates new form JMudarSenha
      */
     public JMudarSenha() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -26,7 +38,17 @@ public class JMudarSenha extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPasswordField3 = new javax.swing.JPasswordField();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        CampoSenhaAntiga = new javax.swing.JPasswordField();
+        jLabel3 = new javax.swing.JLabel();
+        CampoSenhaNova = new javax.swing.JPasswordField();
+        jLabel4 = new javax.swing.JLabel();
+        CampoConfirmarSenha = new javax.swing.JPasswordField();
+        BotaoConfirmar = new javax.swing.JButton();
+
+        jPasswordField3.setText("jPasswordField3");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -35,25 +57,152 @@ public class JMudarSenha extends javax.swing.JFrame {
         jLabel1.setText("Troca de senha");
         jLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        jLabel2.setText("Senha antiga");
+
+        CampoSenhaAntiga.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CampoSenhaAntigaActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Nova Senha");
+
+        jLabel4.setText("Confirme a nova senha");
+
+        CampoConfirmarSenha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CampoConfirmarSenhaActionPerformed(evt);
+            }
+        });
+
+        BotaoConfirmar.setText("Mudar senha");
+        BotaoConfirmar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotaoConfirmarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(21, 21, 21)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(CampoSenhaAntiga)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(CampoSenhaNova)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(CampoConfirmarSenha, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(139, Short.MAX_VALUE)
+                .addComponent(BotaoConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(125, 125, 125))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addContainerGap(267, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(CampoSenhaAntiga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(CampoSenhaNova, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(CampoConfirmarSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(BotaoConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void CampoSenhaAntigaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CampoSenhaAntigaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CampoSenhaAntigaActionPerformed
+
+    private void CampoConfirmarSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CampoConfirmarSenhaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CampoConfirmarSenhaActionPerformed
+
+    private void BotaoConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoConfirmarActionPerformed
+        String senhaAntiga = new String(CampoSenhaAntiga.getPassword());
+        String senhaNova = new String(CampoSenhaNova.getPassword());
+        String senhaConfirmar = new String(CampoConfirmarSenha.getPassword());
+
+        if (senhaAntiga.isEmpty() || senhaNova.isEmpty() || senhaConfirmar.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Preencha todos os campos!", "Erro", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (senhaAntiga.equals(senhaNova)) {
+            JOptionPane.showMessageDialog(this, "A nova senha deve ser diferente da senha antiga!", "Erro", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (!senhaNova.equals(senhaConfirmar)) {
+            JOptionPane.showMessageDialog(this, "As senhas não coincidem!", "Erro", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        EntityManager em = emf.createEntityManager();
+
+        try {
+            em.getTransaction().begin();
+
+            // Busca o usuário na sessão
+            int userId = SessaoUsuario.getInstance().getIdUsuario();
+            
+            System.out.println(userId);
+            
+            Usuario usuario = em.createQuery(
+                    "SELECT u FROM Usuario u WHERE u.id = :userId AND u.senha = :senhaAntiga", Usuario.class)
+                    .setParameter("userId", userId)
+                    .setParameter("senhaAntiga", hashMD5(senhaAntiga))
+                    .getSingleResult();
+
+            // Atualiza a senha do usuário
+            usuario.setSenha(hashMD5(senhaNova));
+            em.merge(usuario);
+            em.getTransaction().commit();
+
+            JOptionPane.showMessageDialog(this, "Senha alterada com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+        } catch (NoResultException e) {
+            JOptionPane.showMessageDialog(this, "Senha antiga incorreta!", "Erro", JOptionPane.WARNING_MESSAGE);
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            JOptionPane.showMessageDialog(this, "Erro ao alterar senha: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            em.close();
+        }
+    }//GEN-LAST:event_BotaoConfirmarActionPerformed
+       
+    /**
+ * Método para gerar hash MD5 da senha
+ */
+    private String hashMD5(String senha) {
+        try {
+            java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
+            byte[] array = md.digest(senha.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (byte b : array) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        } catch (java.security.NoSuchAlgorithmException ex) {
+            throw new RuntimeException("Erro ao gerar hash MD5", ex);
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -91,6 +240,14 @@ public class JMudarSenha extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BotaoConfirmar;
+    private javax.swing.JPasswordField CampoConfirmarSenha;
+    private javax.swing.JPasswordField CampoSenhaAntiga;
+    private javax.swing.JPasswordField CampoSenhaNova;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JPasswordField jPasswordField3;
     // End of variables declaration//GEN-END:variables
 }

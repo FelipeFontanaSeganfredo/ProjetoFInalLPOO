@@ -48,6 +48,20 @@ public class JDashboardMotorista extends javax.swing.JFrame {
         jMenuBar1.add(MenuSair);
 
         MenuMudarSenha.setText("Mudar senha");
+        MenuMudarSenha.addMenuKeyListener(new javax.swing.event.MenuKeyListener() {
+            public void menuKeyPressed(javax.swing.event.MenuKeyEvent evt) {
+                MenuMudarSenhaMenuKeyPressed(evt);
+            }
+            public void menuKeyReleased(javax.swing.event.MenuKeyEvent evt) {
+            }
+            public void menuKeyTyped(javax.swing.event.MenuKeyEvent evt) {
+            }
+        });
+        MenuMudarSenha.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                MenuMudarSenhaMouseClicked(evt);
+            }
+        });
         jMenuBar1.add(MenuMudarSenha);
 
         setJMenuBar(jMenuBar1);
@@ -73,6 +87,15 @@ public class JDashboardMotorista extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_MenuSairMouseClicked
 
+    private void MenuMudarSenhaMenuKeyPressed(javax.swing.event.MenuKeyEvent evt) {//GEN-FIRST:event_MenuMudarSenhaMenuKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_MenuMudarSenhaMenuKeyPressed
+
+    private void MenuMudarSenhaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MenuMudarSenhaMouseClicked
+        new JMudarSenha().setVisible(true);
+    }//GEN-LAST:event_MenuMudarSenhaMouseClicked
+
+    
     /**
      * @param args the command line arguments
      */

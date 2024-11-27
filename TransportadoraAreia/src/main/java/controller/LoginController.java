@@ -21,19 +21,21 @@ public class LoginController {
         try {
             Object[] resultado;
 
-            // Consulta genérica para administrador (root) ou motorista (CPF)
+            // Consulta para buscar o ID, tipo e senha do usuário
             resultado = (Object[]) em.createQuery(
-                    "SELECT u.tipo, u.senha FROM Usuario u WHERE (u.cpf = :cpf OR (:cpf = 'root' AND u.cpf IS NULL))")
+                    "SELECT u.id, u.tipo, u.senha FROM Usuario u WHERE (u.cpf = :cpf OR (:cpf = 'root' AND u.cpf IS NULL))")
                     .setParameter("cpf", login)
                     .getSingleResult();
 
-            String tipoUsuario = (String) resultado[0];
-            String senhaHash = (String) resultado[1];
+            int idUsuario = (int) resultado[0];
+            String tipoUsuario = (String) resultado[1];
+            String senhaHash = (String) resultado[2];
 
             // Verifica se a senha informada corresponde à senha armazenada
             if (criptografarSenha(senha).equals(senhaHash)) {
                 // Atualiza a sessão com os dados do usuário
                 SessaoUsuario sessao = SessaoUsuario.getInstance();
+                sessao.setIdUsuario(idUsuario); // Atualiza o ID do usuário
                 sessao.setTipoUsuario(tipoUsuario); // Atualiza o tipo (motorista ou administrador)
                 return true;
             } else {
