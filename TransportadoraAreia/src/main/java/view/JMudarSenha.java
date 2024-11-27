@@ -27,6 +27,7 @@ public class JMudarSenha extends javax.swing.JFrame {
     public JMudarSenha() {
         initComponents();
         setLocationRelativeTo(null);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
 
     /**
