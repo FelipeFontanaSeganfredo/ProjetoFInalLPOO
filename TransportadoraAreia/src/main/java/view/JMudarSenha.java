@@ -9,9 +9,9 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Persistence;
-import jakarta.persistence.Persistence;
 import javax.swing.JOptionPane;
-import model.Usuario;
+import model.Administrador;
+import model.Motorista;
 
 /**
  *
@@ -137,57 +137,33 @@ public class JMudarSenha extends javax.swing.JFrame {
     }//GEN-LAST:event_CampoConfirmarSenhaActionPerformed
 
     private void BotaoConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoConfirmarActionPerformed
-        String senhaAntiga = new String(CampoSenhaAntiga.getPassword());
+         String senhaAntiga = new String(CampoSenhaAntiga.getPassword());
         String senhaNova = new String(CampoSenhaNova.getPassword());
         String senhaConfirmar = new String(CampoConfirmarSenha.getPassword());
 
+        if (!validarEntradas(senhaAntiga, senhaNova, senhaConfirmar)) return;
+
+        alterarSenhaUsuario(senhaAntiga, senhaNova);
+    }//GEN-LAST:event_BotaoConfirmarActionPerformed
+    
+    private boolean validarEntradas(String senhaAntiga, String senhaNova, String senhaConfirmar) {
         if (senhaAntiga.isEmpty() || senhaNova.isEmpty() || senhaConfirmar.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Preencha todos os campos!", "Erro", JOptionPane.WARNING_MESSAGE);
-            return;
+            exibirMensagem("Preencha todos os campos!", "Erro", JOptionPane.WARNING_MESSAGE);
+            return false;
         }
 
         if (senhaAntiga.equals(senhaNova)) {
-            JOptionPane.showMessageDialog(this, "A nova senha deve ser diferente da senha antiga!", "Erro", JOptionPane.WARNING_MESSAGE);
-            return;
+            exibirMensagem("A nova senha deve ser diferente da senha antiga!", "Erro", JOptionPane.WARNING_MESSAGE);
+            return false;
         }
 
         if (!senhaNova.equals(senhaConfirmar)) {
-            JOptionPane.showMessageDialog(this, "As senhas não coincidem!", "Erro", JOptionPane.WARNING_MESSAGE);
-            return;
+            exibirMensagem("As senhas não coincidem!", "Erro", JOptionPane.WARNING_MESSAGE);
+            return false;
         }
 
-        EntityManager em = emf.createEntityManager();
-
-        try {
-            em.getTransaction().begin();
-
-            // Busca o usuário na sessão
-            int userId = SessaoUsuario.getInstance().getIdUsuario();
-            
-            System.out.println(userId);
-            
-            Usuario usuario = em.createQuery(
-                    "SELECT u FROM Usuario u WHERE u.id = :userId AND u.senha = :senhaAntiga", Usuario.class)
-                    .setParameter("userId", userId)
-                    .setParameter("senhaAntiga", hashMD5(senhaAntiga))
-                    .getSingleResult();
-
-            // Atualiza a senha do usuário
-            usuario.setSenha(hashMD5(senhaNova));
-            em.merge(usuario);
-            em.getTransaction().commit();
-
-            JOptionPane.showMessageDialog(this, "Senha alterada com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-        } catch (NoResultException e) {
-            JOptionPane.showMessageDialog(this, "Senha antiga incorreta!", "Erro", JOptionPane.WARNING_MESSAGE);
-        } catch (Exception e) {
-            em.getTransaction().rollback();
-            JOptionPane.showMessageDialog(this, "Erro ao alterar senha: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-        } finally {
-            em.close();
-        }
-    }//GEN-LAST:event_BotaoConfirmarActionPerformed
-       
+        return true;
+    }
     /**
  * Método para gerar hash MD5 da senha
  */
@@ -203,6 +179,55 @@ public class JMudarSenha extends javax.swing.JFrame {
         } catch (java.security.NoSuchAlgorithmException ex) {
             throw new RuntimeException("Erro ao gerar hash MD5", ex);
         }
+    }
+    
+    /**
+     * Realiza a alteração da senha do administrador ou motorista logado.
+     */
+    private void alterarSenhaUsuario(String senhaAntiga, String senhaNova) {
+        EntityManager em = emf.createEntityManager();
+
+        try {
+            em.getTransaction().begin();
+
+            // Recupera a sessão para determinar o tipo de usuário logado
+            int userId = SessaoUsuario.getInstance().getIdUsuario();
+            String tipoUsuario = SessaoUsuario.getInstance().getTipoUsuario(); // "Admin" ou "Motorista"
+
+            if ("Admin".equalsIgnoreCase(tipoUsuario)) {
+                alterarSenhaAdmin(em, userId, senhaAntiga, senhaNova);
+            } else if ("Motorista".equalsIgnoreCase(tipoUsuario)) {
+                alterarSenhaMotorista(em, userId, senhaAntiga, senhaNova);
+            } else {
+                throw new IllegalArgumentException("Tipo de usuário desconhecido!");
+            }
+
+            em.getTransaction().commit();
+
+            exibirMensagem("Senha alterada com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+            dispose(); // Fecha a janela após sucesso.
+        } catch (NoResultException e) {
+            exibirMensagem("Senha antiga incorreta!", "Erro", JOptionPane.WARNING_MESSAGE);
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            exibirMensagem("Erro ao alterar senha: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            em.close();
+        }
+    }
+    
+    /**
+     * Altera a senha de um administrador.
+     */
+    private void alterarSenhaAdmin(EntityManager em, int adminId, String senhaAntiga, String senhaNova) {
+        Administrador admin = em.createQuery(
+                "SELECT a FROM Admin a WHERE a.id = :adminId AND a.senha = :senhaAntiga", Administrador.class)
+                .setParameter("adminId", adminId)
+                .setParameter("senhaAntiga", hashMD5(senhaAntiga))
+                .getSingleResult();
+
+        admin.setSenha(hashMD5(senhaNova));
+        em.merge(admin);
     }
 
     /**
@@ -238,6 +263,27 @@ public class JMudarSenha extends javax.swing.JFrame {
                 new JMudarSenha().setVisible(true);
             }
         });
+    }
+    
+    /**
+     * Altera a senha de um motorista.
+     */
+    private void alterarSenhaMotorista(EntityManager em, int motoristaId, String senhaAntiga, String senhaNova) {
+        Motorista motorista = em.createQuery(
+                "SELECT m FROM Motorista m WHERE m.id = :motoristaId AND m.senha = :senhaAntiga", Motorista.class)
+                .setParameter("motoristaId", motoristaId)
+                .setParameter("senhaAntiga", hashMD5(senhaAntiga))
+                .getSingleResult();
+
+        motorista.setSenha(hashMD5(senhaNova));
+        em.merge(motorista);
+    }
+    
+    /**
+     * Exibe mensagens de diálogo com o usuário.
+     */
+    private void exibirMensagem(String mensagem, String titulo, int tipoMensagem) {
+        JOptionPane.showMessageDialog(this, mensagem, titulo, tipoMensagem);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

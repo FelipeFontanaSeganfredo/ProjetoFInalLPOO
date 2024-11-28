@@ -16,6 +16,17 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Mudar senha"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="MenuMudarSenhaMouseClicked"/>
+          </Events>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="BotaoMinhasInformacoes">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Minhas informa&#xe7;&#xf5;es"/>
+          </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="BotaoMinhasInformacoesMouseClicked"/>
+          </Events>
         </Menu>
       </SubComponents>
     </Menu>

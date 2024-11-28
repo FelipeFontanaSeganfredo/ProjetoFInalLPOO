@@ -14,19 +14,37 @@ public class LoginController {
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("meu-persistence-unit");
 
     /**
-     * Método para autenticar usuário (CPF ou "root") e senha.
+     * Método para autenticar usuário (CPF e senha).
      */
-    public boolean autenticar(String login, String senha) {
+    public boolean autenticar(String cpf, String senha) {
         EntityManager em = emf.createEntityManager();
         try {
-            Object[] resultado;
+            Object[] resultado = null;
 
-            // Consulta para buscar o ID, tipo e senha do usuário
-            resultado = (Object[]) em.createQuery(
-                    "SELECT u.id, u.tipo, u.senha FROM Usuario u WHERE (u.cpf = :cpf OR (:cpf = 'root' AND u.cpf IS NULL))")
-                    .setParameter("cpf", login)
-                    .getSingleResult();
+            // Verifica se o CPF pertence a um administrador
+            try {
+                resultado = (Object[]) em.createQuery(
+                        "SELECT a.id, 'admin', a.senha FROM Administrador a WHERE a.cpf = :cpf")
+                        .setParameter("cpf", cpf)
+                        .getSingleResult();
+            } catch (NoResultException e) {
+                // Ignora o erro e continua verificando na tabela Motorista
+            }
 
+            // Se não foi encontrado em Admin, verifica na tabela Motorista
+            if (resultado == null) {
+                try {
+                    resultado = (Object[]) em.createQuery(
+                            "SELECT m.id, 'motorista', m.senha FROM Motorista m WHERE m.cpf = :cpf")
+                            .setParameter("cpf", cpf)
+                            .getSingleResult();
+                } catch (NoResultException e) {
+                    // Nenhum usuário encontrado
+                    return false;
+                }
+            }
+
+            // Extraindo os dados do resultado
             int idUsuario = (int) resultado[0];
             String tipoUsuario = (String) resultado[1];
             String senhaHash = (String) resultado[2];
@@ -42,9 +60,6 @@ public class LoginController {
                 // Senha incorreta
                 return false;
             }
-        } catch (NoResultException e) {
-            // Nenhum usuário encontrado com o login fornecido
-            return false;
         } finally {
             em.close();
         }
@@ -67,7 +82,18 @@ public class LoginController {
     /**
      * Método para verificar se o usuário é administrador.
      */
-    public boolean StatusAdm(String login) {
-        return "root".equals(login);
+    public boolean isAdmin(String cpf) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            // Verifica se o CPF pertence a um administrador
+            long count = em.createQuery(
+                    "SELECT COUNT(a) FROM Administrador a WHERE a.cpf = :cpf", Long.class)
+                    .setParameter("cpf", cpf)
+                    .getSingleResult();
+
+            return count > 0;
+        } finally {
+            em.close();
+        }
     }
 }

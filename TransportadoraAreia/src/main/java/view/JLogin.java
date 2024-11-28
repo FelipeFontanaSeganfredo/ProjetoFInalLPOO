@@ -136,7 +136,7 @@ public class JLogin extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos.");
     } else if (loginController.autenticar(usuario, senha)) {
         // Redireciona com base no tipo de usuário
-        if (SessaoUsuario.getInstance().getTipoUsuario().equalsIgnoreCase("administrador")) {
+        if (SessaoUsuario.getInstance().getTipoUsuario().equalsIgnoreCase("admin")) {
             new JDashboardAdmin().setVisible(true);
         } else {
             new JDashboardMotorista().setVisible(true);

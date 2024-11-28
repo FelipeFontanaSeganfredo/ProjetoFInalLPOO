@@ -4,12 +4,15 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Persistence;
-import model.Usuario;
+import model.Administrador;
+import model.Motorista;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import view.JMainFrame;
 
 /**
- *
- * @author User PC
+ * Classe principal para inicializar o sistema da transportadora.
  */
 public class TransportadoraAreia {
 
@@ -21,10 +24,11 @@ public class TransportadoraAreia {
         try {
             em.getTransaction().begin();
 
-            // Inserir usuários se não existirem
-            inserirUsuarioSeNaoExistir(em, null, "administrador", "1234"); // Root
-            inserirUsuarioSeNaoExistir(em, "632.273.280-38", "motorista", "1234"); // Motorista 1
-            inserirUsuarioSeNaoExistir(em, "123.456.789-00", "motorista", "abcd"); // Motorista 2
+            // Inserir administrador e motorista se não existirem
+            inserirAdministradorSeNaoExistir(em, 
+                "000.000.000-00", "Cássio Cismoski", "admin@empresa.com", "1234"); // Administrador
+            inserirMotoristaSeNaoExistir(em, 
+                "111.111.111-11", "João da Silva", "joao@transportes.com", "987654321", "1234"); // Motorista 1
 
             em.getTransaction().commit();
             System.out.println("Verificação e inserção de usuários concluída!");
@@ -43,25 +47,51 @@ public class TransportadoraAreia {
     }
 
     /**
-     * Método para inserir um usuário se ele não existir no banco de dados.
+     * Método para inserir um administrador se ele não existir no banco de dados.
      */
-    private static void inserirUsuarioSeNaoExistir(EntityManager em, String cpf, String tipo, String senha) {
+    private static void inserirAdministradorSeNaoExistir(EntityManager em, String cpf, String nome, String email, String senha) {
         try {
-            // Verificar se o usuário já existe
-            Usuario usuarioExistente = em.createQuery(
-                    "SELECT u FROM Usuario u WHERE (:cpf IS NULL AND u.cpf IS NULL) OR u.cpf = :cpf", Usuario.class)
+            // Verificar se o administrador já existe
+            Administrador adminExistente = em.createQuery(
+                    "SELECT a FROM Administrador a WHERE a.cpf = :cpf", Administrador.class)
                     .setParameter("cpf", cpf)
                     .getSingleResult();
 
-            System.out.println("Usuário já existe: " + (cpf == null ? "root" : cpf));
+            System.out.println("Administrador já existe: " + cpf);
         } catch (NoResultException e) {
-            // Usuário não existe, criar e persistir
-            Usuario novoUsuario = new Usuario();
-            novoUsuario.setCpf(cpf);
-            novoUsuario.setTipo(tipo);
-            novoUsuario.setSenha(criptografarSenha(senha));
-            em.persist(novoUsuario);
-            System.out.println("Usuário inserido: " + (cpf == null ? "root" : cpf));
+            // Administrador não existe, criar e persistir
+            Administrador novoAdmin = new Administrador();
+            novoAdmin.setCpf(cpf);
+            novoAdmin.setNome(nome);
+            novoAdmin.setEmail(email);
+            novoAdmin.setSenha(criptografarSenha(senha));
+            em.persist(novoAdmin);
+            System.out.println("Administrador inserido: " + cpf);
+        }
+    }
+
+    /**
+     * Método para inserir um motorista se ele não existir no banco de dados.
+     */
+    private static void inserirMotoristaSeNaoExistir(EntityManager em, String cpf, String nome, String email, String telefone, String senha) {
+        try {
+            // Verificar se o motorista já existe
+            Motorista motoristaExistente = em.createQuery(
+                    "SELECT m FROM Motorista m WHERE m.cpf = :cpf", Motorista.class)
+                    .setParameter("cpf", cpf)
+                    .getSingleResult();
+
+            System.out.println("Motorista já existe: " + cpf);
+        } catch (NoResultException e) {
+            // Motorista não existe, criar e persistir
+            Motorista novoMotorista = new Motorista();
+            novoMotorista.setCpf(cpf);
+            novoMotorista.setNome(nome);
+            novoMotorista.setEmail(email);
+            novoMotorista.setTelefone(telefone);
+            novoMotorista.setSenha(criptografarSenha(senha));
+            em.persist(novoMotorista);
+            System.out.println("Motorista inserido: " + cpf);
         }
     }
 
@@ -70,11 +100,11 @@ public class TransportadoraAreia {
      */
     private static String criptografarSenha(String senha) {
         try {
-            java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
+            MessageDigest md = MessageDigest.getInstance("MD5");
             byte[] messageDigest = md.digest(senha.getBytes());
-            java.math.BigInteger no = new java.math.BigInteger(1, messageDigest);
+            BigInteger no = new BigInteger(1, messageDigest);
             return no.toString(16); // Converte para hexadecimal
-        } catch (java.security.NoSuchAlgorithmException e) {
+        } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("Erro ao criptografar a senha", e);
         }
     }

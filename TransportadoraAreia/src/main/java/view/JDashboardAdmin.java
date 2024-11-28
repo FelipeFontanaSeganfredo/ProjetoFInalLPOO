@@ -35,6 +35,7 @@ public class JDashboardAdmin extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         MenuSair = new javax.swing.JMenu();
         MenuMudarSenha = new javax.swing.JMenu();
+        BotaoMinhasInformacoes = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -52,7 +53,20 @@ public class JDashboardAdmin extends javax.swing.JFrame {
         jMenuBar1.add(MenuSair);
 
         MenuMudarSenha.setText("Mudar senha");
+        MenuMudarSenha.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                MenuMudarSenhaMouseClicked(evt);
+            }
+        });
         jMenuBar1.add(MenuMudarSenha);
+
+        BotaoMinhasInformacoes.setText("Minhas informações");
+        BotaoMinhasInformacoes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BotaoMinhasInformacoesMouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(BotaoMinhasInformacoes);
 
         setJMenuBar(jMenuBar1);
 
@@ -76,6 +90,14 @@ public class JDashboardAdmin extends javax.swing.JFrame {
     private void MenuSairMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MenuSairMouseClicked
         this.dispose();
     }//GEN-LAST:event_MenuSairMouseClicked
+
+    private void MenuMudarSenhaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MenuMudarSenhaMouseClicked
+        new JMudarSenha().setVisible(true);
+    }//GEN-LAST:event_MenuMudarSenhaMouseClicked
+
+    private void BotaoMinhasInformacoesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BotaoMinhasInformacoesMouseClicked
+        new JMinhasInformacoes().setVisible(true);
+    }//GEN-LAST:event_BotaoMinhasInformacoesMouseClicked
 
     /**
      * @param args the command line arguments
@@ -113,6 +135,7 @@ public class JDashboardAdmin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu BotaoMinhasInformacoes;
     private javax.swing.JMenu MenuMudarSenha;
     private javax.swing.JMenu MenuSair;
     private javax.swing.JLabel jLabel1;

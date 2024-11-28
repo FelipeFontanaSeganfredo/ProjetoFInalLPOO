@@ -1,11 +1,15 @@
 
 package model;
 
+import jakarta.persistence.*;
 import java.util.*;
 
+@MappedSuperclass
 public abstract class Pessoa {
     
 // atributos
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String nome;
     private Date dataNascimento;
