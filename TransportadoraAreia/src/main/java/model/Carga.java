@@ -1,9 +1,15 @@
 
 package model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "tb_carga")
 public class Carga {
     
 // atributos
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private float peso;
     private float volume;

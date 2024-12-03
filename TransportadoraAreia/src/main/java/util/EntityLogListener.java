@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 public class EntityLogListener {
 
-    private static final Logger logger = LoggerFactory.getLogger(EntityLogListener.class);
+  private static final Logger logger = LoggerFactory.getLogger(EntityLogListener.class);
 
     @PrePersist
     public void onPrePersist(Object entity) {

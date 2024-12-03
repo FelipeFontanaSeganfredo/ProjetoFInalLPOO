@@ -1,9 +1,15 @@
 
 package model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "tb_pedido")
 public class Pedido {
 
 // atributos
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
 // getters e setters

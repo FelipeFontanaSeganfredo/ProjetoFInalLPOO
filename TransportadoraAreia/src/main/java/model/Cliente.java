@@ -1,6 +1,10 @@
 
 package model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "tb_pesssoa")
 public class Cliente extends Pessoa{
 
 // atributos

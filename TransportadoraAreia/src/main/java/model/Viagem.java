@@ -1,14 +1,27 @@
 
 package model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "tb_viagem")
 public class Viagem {
     
 // atributos
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String localOrigem;
     private String localDestino;
+    
+    @OneToOne
+    @JoinColumn(name = "motorista_id")    
     private Motorista motorista;
+    @OneToOne
+    @JoinColumn(name = "cliente_id")    
     private Cliente cliente;
+    @OneToOne
+    @JoinColumn(name = "carga_id") 
     private Carga carga;
 
 // getters e setters

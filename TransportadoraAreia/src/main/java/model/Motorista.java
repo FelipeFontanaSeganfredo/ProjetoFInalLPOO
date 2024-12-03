@@ -1,9 +1,7 @@
 
 package model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 // Comentei algumas coisas ainda não implementadas
 
@@ -15,6 +13,13 @@ public class Motorista extends Pessoa{
 // atributos
     private float salario;
     private String cpf;
+    private String cnh;
+
+    @OneToOne
+    @JoinColumn(name = "caminhao_id")
+    private Caminhao caminhao;
+
+    private String senha;
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
@@ -23,9 +28,6 @@ public class Motorista extends Pessoa{
     public String getCpf() {
         return cpf;
     }
-    private String cnh;
-//    private Caminhao caminhao;
-    private String senha;
 
     public void setSenha(String senha) {
         this.senha = senha;
@@ -52,14 +54,14 @@ public class Motorista extends Pessoa{
         this.cnh = cnh;
     }
 
-/*    public Caminhao getCaminhao() {
+    public Caminhao getCaminhao() {
         return caminhao;
     }
 
     public void setCaminhao(Caminhao caminhao) {
         this.caminhao = caminhao;
     }
-*/    
+    
 // toString
     @Override
     public String toString() {

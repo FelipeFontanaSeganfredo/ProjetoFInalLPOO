@@ -1,9 +1,15 @@
 
 package model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "tb_estoque")
 public class Estoque {
 
-// atributos    
+// atributos
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private int volume;
     
