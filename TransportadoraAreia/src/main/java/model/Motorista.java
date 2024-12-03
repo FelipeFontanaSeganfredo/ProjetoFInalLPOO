@@ -2,12 +2,14 @@
 package model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.Table;
 
 // Comentei algumas coisas ainda não implementadas
 
 @Entity
 @Table(name = "tb_motorista")
+@EntityListeners(util.EntityLogListener.class)
 public class Motorista extends Pessoa{
 
 // atributos

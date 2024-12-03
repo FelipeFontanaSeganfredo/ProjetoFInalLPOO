@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "tb_admin")
+@EntityListeners(util.EntityLogListener.class) // Usado para salvar os logs.
 public class Administrador extends Pessoa{
 
 // atributos    

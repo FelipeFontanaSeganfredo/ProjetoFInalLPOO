@@ -189,12 +189,15 @@ public class JMudarSenha extends javax.swing.JFrame {
 
         try {
             em.getTransaction().begin();
+            
+
 
             // Recupera a sessão para determinar o tipo de usuário logado
             int userId = SessaoUsuario.getInstance().getIdUsuario();
             String tipoUsuario = SessaoUsuario.getInstance().getTipoUsuario(); // "Admin" ou "Motorista"
 
-            if ("Admin".equalsIgnoreCase(tipoUsuario)) {
+            System.out.println("Tipo de Usuário na sessão: " + tipoUsuario);
+            if ("admin".equalsIgnoreCase(tipoUsuario)) {
                 alterarSenhaAdmin(em, userId, senhaAntiga, senhaNova);
             } else if ("Motorista".equalsIgnoreCase(tipoUsuario)) {
                 alterarSenhaMotorista(em, userId, senhaAntiga, senhaNova);
@@ -221,7 +224,7 @@ public class JMudarSenha extends javax.swing.JFrame {
      */
     private void alterarSenhaAdmin(EntityManager em, int adminId, String senhaAntiga, String senhaNova) {
         Administrador admin = em.createQuery(
-                "SELECT a FROM Admin a WHERE a.id = :adminId AND a.senha = :senhaAntiga", Administrador.class)
+                "SELECT a FROM Administrador a WHERE a.id = :adminId AND a.senha = :senhaAntiga", Administrador.class)
                 .setParameter("adminId", adminId)
                 .setParameter("senhaAntiga", hashMD5(senhaAntiga))
                 .getSingleResult();

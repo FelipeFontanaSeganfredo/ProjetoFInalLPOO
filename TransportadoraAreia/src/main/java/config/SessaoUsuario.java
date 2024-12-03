@@ -12,6 +12,8 @@ public class SessaoUsuario {
     private static SessaoUsuario instancia;
     private int idUsuario;
     private String tipoUsuario;
+    private String nome;
+    private String cpf;
 
     // Construtor privado para Singleton
     private SessaoUsuario() {}
@@ -40,8 +42,26 @@ public class SessaoUsuario {
         this.tipoUsuario = tipoUsuario;
     }
 
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
     public void limparSessao() {
         idUsuario = 0;
         tipoUsuario = null;
+        nome = null;
+        cpf = null;
     }
 }

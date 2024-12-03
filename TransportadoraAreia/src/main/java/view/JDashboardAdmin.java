@@ -36,6 +36,7 @@ public class JDashboardAdmin extends javax.swing.JFrame {
         MenuSair = new javax.swing.JMenu();
         MenuMudarSenha = new javax.swing.JMenu();
         BotaoMinhasInformacoes = new javax.swing.JMenu();
+        BotaoLogs = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -68,6 +69,14 @@ public class JDashboardAdmin extends javax.swing.JFrame {
         });
         jMenuBar1.add(BotaoMinhasInformacoes);
 
+        BotaoLogs.setText("Logs de alterações");
+        BotaoLogs.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BotaoLogsMouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(BotaoLogs);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -98,6 +107,10 @@ public class JDashboardAdmin extends javax.swing.JFrame {
     private void BotaoMinhasInformacoesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BotaoMinhasInformacoesMouseClicked
         new JMinhasInformacoes().setVisible(true);
     }//GEN-LAST:event_BotaoMinhasInformacoesMouseClicked
+
+    private void BotaoLogsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BotaoLogsMouseClicked
+        new JLogs().setVisible(true);
+    }//GEN-LAST:event_BotaoLogsMouseClicked
 
     /**
      * @param args the command line arguments
@@ -135,6 +148,7 @@ public class JDashboardAdmin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu BotaoLogs;
     private javax.swing.JMenu BotaoMinhasInformacoes;
     private javax.swing.JMenu MenuMudarSenha;
     private javax.swing.JMenu MenuSair;
