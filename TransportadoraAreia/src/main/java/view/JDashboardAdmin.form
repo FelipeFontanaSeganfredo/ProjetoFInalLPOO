@@ -62,15 +62,52 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jLabel1" alignment="1" pref="800" max="32767" attributes="0"/>
+          <Component id="jLabel1" alignment="1" max="32767" attributes="0"/>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="72" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Component id="btnCaminhoes" min="-2" pref="250" max="-2" attributes="0"/>
+                  <Component id="btnViagens" min="-2" pref="250" max="-2" attributes="0"/>
+                  <Component id="btnMotoristas" min="-2" pref="250" max="-2" attributes="0"/>
+                  <Component id="btnPedidos" alignment="1" min="-2" pref="250" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="204" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="btnClientes" alignment="1" min="-2" pref="250" max="-2" attributes="0"/>
+                  <Component id="btnEstoque" alignment="1" min="-2" pref="250" max="-2" attributes="0"/>
+                  <Component id="btnDestinos" alignment="1" min="-2" pref="250" max="-2" attributes="0"/>
+                  <Component id="btnRelatorios" alignment="1" min="-2" pref="250" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="68" max="-2" attributes="0"/>
+          </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="544" max="32767" attributes="0"/>
+              <Component id="jLabel1" min="-2" pref="36" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="btnMotoristas" min="-2" pref="70" max="-2" attributes="0"/>
+                  <Component id="btnClientes" max="32767" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="btnViagens" alignment="0" min="-2" pref="70" max="-2" attributes="0"/>
+                  <Component id="btnEstoque" min="-2" pref="70" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="btnPedidos" alignment="3" min="-2" pref="70" max="-2" attributes="0"/>
+                  <Component id="btnDestinos" alignment="3" min="-2" pref="70" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="btnCaminhoes" alignment="3" min="-2" pref="70" max="-2" attributes="0"/>
+                  <Component id="btnRelatorios" alignment="3" min="-2" pref="70" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="30" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -88,6 +125,58 @@
             <LineBorder/>
           </Border>
         </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnMotoristas">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Motoristas"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnMotoristasActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnViagens">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Viagens"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnEstoque">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Estoque"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnPedidos">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Pedidos"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPedidosActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnClientes">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Clientes"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnClientesActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnDestinos">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Destinos"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnCaminhoes">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Caminh&#xf5;es"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCaminhoesActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnRelatorios">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Relat&#xf3;rios"/>
       </Properties>
     </Component>
   </SubComponents>
