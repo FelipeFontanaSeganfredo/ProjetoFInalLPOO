@@ -196,7 +196,7 @@ public class JDashboardAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_btnPedidosActionPerformed
 
     private void btnClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClientesActionPerformed
-        // TODO add your handling code here:
+        new JPainelClientesAdmin().setVisible(true);
     }//GEN-LAST:event_btnClientesActionPerformed
 
     private void btnCaminhoesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCaminhoesActionPerformed
