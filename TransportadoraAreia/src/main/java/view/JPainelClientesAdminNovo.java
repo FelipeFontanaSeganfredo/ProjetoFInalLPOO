@@ -4,6 +4,7 @@
  */
 package view;
 
+import javax.swing.JOptionPane;
 import model.Cliente;
 import service.ClienteService;
 
@@ -18,6 +19,7 @@ public class JPainelClientesAdminNovo extends javax.swing.JFrame {
      */
     public JPainelClientesAdminNovo() {
         initComponents();
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
 
@@ -146,6 +148,8 @@ public class JPainelClientesAdminNovo extends javax.swing.JFrame {
         
         ClienteService service = new ClienteService();
         service.salvar(cliente);
+        
+        JOptionPane.showMessageDialog(this, "Cliente cadastrado com sucesso.");
     }//GEN-LAST:event_BotaoCadastrarMouseClicked
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed

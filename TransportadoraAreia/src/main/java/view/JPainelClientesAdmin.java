@@ -21,6 +21,7 @@ public class JPainelClientesAdmin extends javax.swing.JFrame {
         initComponents();
         atualizarTabela();
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
     }
 
     private void atualizarTabela() {
@@ -55,7 +56,6 @@ public class JPainelClientesAdmin extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         BotaoEditar = new javax.swing.JButton();
         BotaoExcluir = new javax.swing.JButton();
-        BotaoRecarregar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -103,13 +103,6 @@ public class JPainelClientesAdmin extends javax.swing.JFrame {
             }
         });
 
-        BotaoRecarregar.setText("Reload");
-        BotaoRecarregar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                BotaoRecarregarMouseClicked(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -140,11 +133,6 @@ public class JPainelClientesAdmin extends javax.swing.JFrame {
                     .addContainerGap(460, Short.MAX_VALUE)
                     .addComponent(BotaoExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(240, Short.MAX_VALUE)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(686, Short.MAX_VALUE)
-                    .addComponent(BotaoRecarregar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(14, 14, 14)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -174,11 +162,6 @@ public class JPainelClientesAdmin extends javax.swing.JFrame {
                     .addContainerGap(106, Short.MAX_VALUE)
                     .addComponent(BotaoExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(458, Short.MAX_VALUE)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(52, Short.MAX_VALUE)
-                    .addComponent(BotaoRecarregar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(517, Short.MAX_VALUE)))
         );
 
         pack();
@@ -216,17 +199,48 @@ public class JPainelClientesAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_BotaoExcluirMouseClicked
 }
     private void BotaoNovoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BotaoNovoMouseClicked
-        new JPainelClientesAdminNovo().setVisible(true);
-        atualizarTabela();
+        JPainelClientesAdminNovo telaNovo = new JPainelClientesAdminNovo();
+
+        // Adiciona um evento para atualizar a tabela ao fechar a janela de adição
+        telaNovo.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                atualizarTabela(); // Atualiza a tabela ao fechar a tela de adição
+            }
+        });
+
+        telaNovo.setVisible(true);
     }//GEN-LAST:event_BotaoNovoMouseClicked
 
     private void BotaoEditarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BotaoEditarMouseClicked
-        new JPainelClientesAdminEditar().setVisible(true);
-    }//GEN-LAST:event_BotaoEditarMouseClicked
+         int linhaSelecionada = jTable1.getSelectedRow();
 
-    private void BotaoRecarregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BotaoRecarregarMouseClicked
-        atualizarTabela();
-    }//GEN-LAST:event_BotaoRecarregarMouseClicked
+    if (linhaSelecionada != -1) {
+        // Obtém o ID da linha selecionada
+        Object valorId = jTable1.getValueAt(linhaSelecionada, 0);
+
+        if (valorId instanceof Integer) {
+            Integer id = (Integer) valorId;
+
+            // Abre a tela de edição, passando o ID selecionado
+            JPainelClientesAdminEditar telaEditar = new JPainelClientesAdminEditar(id);
+
+            // Adiciona um evento para atualizar a tabela quando a tela de edição for fechada
+            telaEditar.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosed(java.awt.event.WindowEvent e) {
+                    atualizarTabela(); // Atualiza a tabela ao fechar a tela de edição
+                }
+            });
+
+            telaEditar.setVisible(true);
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "ID inválido.");
+        }
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Selecione um cliente para editar.");
+        }
+    }//GEN-LAST:event_BotaoEditarMouseClicked
 
     /**
      * @param args the command line arguments
@@ -267,7 +281,6 @@ public class JPainelClientesAdmin extends javax.swing.JFrame {
     private javax.swing.JButton BotaoEditar;
     private javax.swing.JButton BotaoExcluir;
     private javax.swing.JButton BotaoNovo;
-    private javax.swing.JButton BotaoRecarregar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;

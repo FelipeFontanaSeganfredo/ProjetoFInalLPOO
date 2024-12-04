@@ -59,13 +59,6 @@
                   <EmptySpace pref="240" max="32767" attributes="0"/>
               </Group>
           </Group>
-          <Group type="103" rootIndex="6" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace pref="686" max="32767" attributes="0"/>
-                  <Component id="BotaoRecarregar" min="-2" pref="100" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
-              </Group>
-          </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -104,13 +97,6 @@
                   <EmptySpace pref="106" max="32767" attributes="0"/>
                   <Component id="BotaoExcluir" min="-2" pref="36" max="-2" attributes="0"/>
                   <EmptySpace pref="458" max="32767" attributes="0"/>
-              </Group>
-          </Group>
-          <Group type="103" rootIndex="6" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace pref="52" max="32767" attributes="0"/>
-                  <Component id="BotaoRecarregar" min="-2" pref="31" max="-2" attributes="0"/>
-                  <EmptySpace pref="517" max="32767" attributes="0"/>
               </Group>
           </Group>
       </Group>
@@ -175,14 +161,6 @@
       </Properties>
       <Events>
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="BotaoExcluirMouseClicked"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="BotaoRecarregar">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Reload"/>
-      </Properties>
-      <Events>
-        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="BotaoRecarregarMouseClicked"/>
       </Events>
     </Component>
   </SubComponents>

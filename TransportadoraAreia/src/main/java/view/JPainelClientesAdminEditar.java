@@ -4,19 +4,50 @@
  */
 package view;
 
+import javax.swing.JOptionPane;
+import model.Cliente;
+import service.ClienteService;
+
 /**
  *
  * @author User PC
  */
 public class JPainelClientesAdminEditar extends javax.swing.JFrame {
-
+    
+    private Integer clienteId;
+    private Cliente clienteAtual; // Para armazenar o cliente atual
+    private ClienteService service; // Instância do serviço
     /**
      * Creates new form JPainelClientesAdminEditar
+     * @param clienteId
      */
-    public JPainelClientesAdminEditar() {
+    public JPainelClientesAdminEditar(Integer clienteId) {
         initComponents();
-    }
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
+        this.clienteId = clienteId;
+        this.service = new ClienteService();
+
+        // Carregar dados do cliente
+        carregarCliente();
+    }
+       
+    private void carregarCliente() {
+        try {
+            clienteAtual = service.buscarPorId(clienteId.longValue());
+            if (clienteAtual != null) {
+                jTextField2.setText(clienteAtual.getNome());
+                jTextField3.setText(clienteAtual.getCnpj());
+            } else {
+                JOptionPane.showMessageDialog(this, "Cliente não encontrado.");
+                dispose();
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao carregar cliente: " + e.getMessage());
+            dispose();
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -27,12 +58,11 @@ public class JPainelClientesAdminEditar extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
+        BotaoSalvar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -40,8 +70,6 @@ public class JPainelClientesAdminEditar extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Editar");
         jLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        jLabel2.setText("ID do Cliente:");
 
         jLabel3.setText("Nome:");
 
@@ -53,25 +81,25 @@ public class JPainelClientesAdminEditar extends javax.swing.JFrame {
 
         jLabel4.setText("CNPJ:");
 
+        BotaoSalvar.setText("Salvar");
+        BotaoSalvar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BotaoSalvarMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(120, 120, 120)
+                .addComponent(BotaoSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(121, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
-                    .addContainerGap()))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(181, Short.MAX_VALUE)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
                     .addContainerGap()))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -96,7 +124,10 @@ public class JPainelClientesAdminEditar extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(229, Short.MAX_VALUE)
+                .addComponent(BotaoSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
@@ -104,34 +135,24 @@ public class JPainelClientesAdminEditar extends javax.swing.JFrame {
                     .addContainerGap(257, Short.MAX_VALUE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(65, Short.MAX_VALUE)
-                    .addComponent(jLabel2)
-                    .addContainerGap(219, Short.MAX_VALUE)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(91, Short.MAX_VALUE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(179, Short.MAX_VALUE)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(132, Short.MAX_VALUE)
+                    .addContainerGap(58, Short.MAX_VALUE)
                     .addComponent(jLabel3)
-                    .addContainerGap(152, Short.MAX_VALUE)))
+                    .addContainerGap(226, Short.MAX_VALUE)))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(82, Short.MAX_VALUE)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(183, Short.MAX_VALUE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addContainerGap(158, Short.MAX_VALUE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(112, Short.MAX_VALUE)))
+                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(107, Short.MAX_VALUE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(220, Short.MAX_VALUE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(50, Short.MAX_VALUE)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(197, Short.MAX_VALUE)
+                    .addContainerGap(134, Short.MAX_VALUE)
                     .addComponent(jLabel4)
-                    .addContainerGap(87, Short.MAX_VALUE)))
+                    .addContainerGap(150, Short.MAX_VALUE)))
         );
 
         pack();
@@ -140,6 +161,27 @@ public class JPainelClientesAdminEditar extends javax.swing.JFrame {
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField3ActionPerformed
+
+    private void BotaoSalvarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BotaoSalvarMouseClicked
+        try {
+            String nome = jTextField2.getText();
+            String cnpj = jTextField3.getText();
+
+            if (nome.isEmpty() || cnpj.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Todos os campos devem ser preenchidos.");
+                return;
+            }
+
+            clienteAtual.setNome(nome);
+            clienteAtual.setCnpj(cnpj);
+
+            service.atualizar(clienteAtual);
+            JOptionPane.showMessageDialog(this, "Cliente atualizado com sucesso.");
+            dispose();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao atualizar cliente: " + e.getMessage());
+        }
+    }//GEN-LAST:event_BotaoSalvarMouseClicked
 
     /**
      * @param args the command line arguments
@@ -171,17 +213,17 @@ public class JPainelClientesAdminEditar extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JPainelClientesAdminEditar().setVisible(true);
+                Integer id = 1;
+                new JPainelClientesAdminEditar(id).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BotaoSalvar;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     // End of variables declaration//GEN-END:variables
