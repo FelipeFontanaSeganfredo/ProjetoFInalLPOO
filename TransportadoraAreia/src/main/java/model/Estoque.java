@@ -12,8 +12,19 @@ public class Estoque {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private int volume;
+    private String nome;
+
     
 // getters e setters
+    
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+    
     public int getId() {
         return id;
     }

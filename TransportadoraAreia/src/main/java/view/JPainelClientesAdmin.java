@@ -172,30 +172,30 @@ public class JPainelClientesAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_BotaoNovoActionPerformed
 
     private void BotaoExcluirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BotaoExcluirMouseClicked
-       int linhaSelecionada = jTable1.getSelectedRow();
+        int linhaSelecionada = jTable1.getSelectedRow();
 
-    if (linhaSelecionada != -1) {
-        // Obtém o ID da linha selecionada
-        Object valorId = jTable1.getValueAt(linhaSelecionada, 0);
+        if (linhaSelecionada != -1) {
+            // Obtém o ID da linha selecionada
+            Object valorId = jTable1.getValueAt(linhaSelecionada, 0);
 
-        if (valorId instanceof Number) {
-            Long id = ((Number) valorId).longValue();
+            if (valorId instanceof Number) {
+                Long id = ((Number) valorId).longValue();
 
-            ClienteService service = new ClienteService();
-            Cliente cliente = service.buscarPorId(id); // Busca o cliente pelo ID
+                ClienteService service = new ClienteService();
+                Cliente cliente = service.buscarPorId(id); // Busca o cliente pelo ID
 
-            if (cliente != null) {
-                service.excluir(cliente); // Exclui o cliente do banco
-                javax.swing.JOptionPane.showMessageDialog(this, "Cliente excluído com sucesso!");
-                atualizarTabela(); // Atualiza os dados exibidos na tabela
+                if (cliente != null) {
+                    service.excluir(cliente); // Exclui o cliente do banco
+                    javax.swing.JOptionPane.showMessageDialog(this, "Cliente excluído com sucesso!");
+                    atualizarTabela(); // Atualiza os dados exibidos na tabela
+                } else {
+                    javax.swing.JOptionPane.showMessageDialog(this, "Cliente não encontrado.");
+                }
             } else {
-                javax.swing.JOptionPane.showMessageDialog(this, "Cliente não encontrado.");
+                javax.swing.JOptionPane.showMessageDialog(this, "ID inválido.");
             }
-        } else {
-            javax.swing.JOptionPane.showMessageDialog(this, "ID inválido.");
-        }
-        } else {
-        javax.swing.JOptionPane.showMessageDialog(this, "Selecione um cliente para excluir.");
+            } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Selecione um cliente para excluir.");
     }//GEN-LAST:event_BotaoExcluirMouseClicked
 }
     private void BotaoNovoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BotaoNovoMouseClicked
@@ -213,32 +213,32 @@ public class JPainelClientesAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_BotaoNovoMouseClicked
 
     private void BotaoEditarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BotaoEditarMouseClicked
-         int linhaSelecionada = jTable1.getSelectedRow();
+        int linhaSelecionada = jTable1.getSelectedRow();
 
-    if (linhaSelecionada != -1) {
-        // Obtém o ID da linha selecionada
-        Object valorId = jTable1.getValueAt(linhaSelecionada, 0);
+        if (linhaSelecionada != -1) {
+            // Obtém o ID da linha selecionada
+            Object valorId = jTable1.getValueAt(linhaSelecionada, 0);
 
-        if (valorId instanceof Integer) {
-            Integer id = (Integer) valorId;
+            if (valorId instanceof Integer) {
+                Integer id = (Integer) valorId;
 
-            // Abre a tela de edição, passando o ID selecionado
-            JPainelClientesAdminEditar telaEditar = new JPainelClientesAdminEditar(id);
+                // Abre a tela de edição, passando o ID selecionado
+                JPainelClientesAdminEditar telaEditar = new JPainelClientesAdminEditar(id);
 
-            // Adiciona um evento para atualizar a tabela quando a tela de edição for fechada
-            telaEditar.addWindowListener(new java.awt.event.WindowAdapter() {
-                @Override
-                public void windowClosed(java.awt.event.WindowEvent e) {
-                    atualizarTabela(); // Atualiza a tabela ao fechar a tela de edição
-                }
-            });
+                // Adiciona um evento para atualizar a tabela quando a tela de edição for fechada
+                telaEditar.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosed(java.awt.event.WindowEvent e) {
+                        atualizarTabela(); // Atualiza a tabela ao fechar a tela de edição
+                    }
+                });
 
-            telaEditar.setVisible(true);
-        } else {
-            javax.swing.JOptionPane.showMessageDialog(this, "ID inválido.");
-        }
-        } else {
-            javax.swing.JOptionPane.showMessageDialog(this, "Selecione um cliente para editar.");
+                telaEditar.setVisible(true);
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "ID inválido.");
+            }
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Selecione um cliente para editar.");
         }
     }//GEN-LAST:event_BotaoEditarMouseClicked
 

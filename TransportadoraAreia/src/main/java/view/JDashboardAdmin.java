@@ -63,6 +63,11 @@ public class JDashboardAdmin extends javax.swing.JFrame {
         btnViagens.setText("Viagens");
 
         btnEstoque.setText("Estoque");
+        btnEstoque.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnEstoqueMouseClicked(evt);
+            }
+        });
 
         btnPedidos.setText("Pedidos");
         btnPedidos.addActionListener(new java.awt.event.ActionListener() {
@@ -203,6 +208,11 @@ public class JDashboardAdmin extends javax.swing.JFrame {
         TelaCaminhoes telaCaminhoes = new TelaCaminhoes();
         telaCaminhoes.setVisible(true);
     }//GEN-LAST:event_btnCaminhoesActionPerformed
+
+    private void btnEstoqueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEstoqueMouseClicked
+        JPainelEstoqueAdmin TelaEstoque = new JPainelEstoqueAdmin();
+        TelaEstoque.setVisible(true);
+    }//GEN-LAST:event_btnEstoqueMouseClicked
 
     /**
      * @param args the command line arguments
