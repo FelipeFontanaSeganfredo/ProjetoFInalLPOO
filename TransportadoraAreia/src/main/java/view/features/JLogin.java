@@ -2,11 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package view;
+package view.features;
 
 import javax.swing.JOptionPane;
 import controller.LoginController;
 import config.SessaoUsuario;
+import view.admin.JDashboardAdmin;
+import view.motorista.JDashboardMotorista;
 
 /**
  *

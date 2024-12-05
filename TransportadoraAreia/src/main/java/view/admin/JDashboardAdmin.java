@@ -2,7 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package view;
+package view.admin;
+
+import view.estoque.JPainelEstoqueAdmin;
+import view.features.JLogs;
+import view.features.JMudarSenha;
+import view.home.JMinhasInformacoes;
+import view.motorista.TelaMotoristas;
+import view.clientes.JPainelClientesAdmin;
+import view.caminhao.TelaCaminhoes;
 
 /**
  *

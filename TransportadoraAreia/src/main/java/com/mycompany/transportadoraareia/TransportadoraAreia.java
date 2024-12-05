@@ -9,7 +9,7 @@ import model.Motorista;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import view.JMainFrame;
+import view.home.JMainFrame;
 
 /**
  * Classe principal para inicializar o sistema da transportadora.

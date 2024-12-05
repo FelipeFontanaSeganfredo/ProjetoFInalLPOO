@@ -1,4 +1,4 @@
-package util;
+package dao;
 
 import jakarta.persistence.*;
 import config.SessaoUsuario;

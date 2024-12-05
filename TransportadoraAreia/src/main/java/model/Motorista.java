@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "tb_motorista")
-@EntityListeners(util.EntityLogListener.class)
+@EntityListeners(dao.EntityLogListener.class)
 public class Motorista extends Pessoa {
 
     private float salario;

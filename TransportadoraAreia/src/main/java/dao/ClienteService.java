@@ -2,48 +2,49 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package service;
+package dao;
+
+/**
+ *
+ * @author User PC
+ */
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
-import java.util.List;
-import model.Estoque;
+import model.Cliente;
 
-/**
- *
- * @author 20231PF.CC0010
- */
-public class EstoqueService {
-    
+import java.util.List;
+
+public class ClienteService {
     private EntityManagerFactory emf;
     private EntityManager em;
 
-    public EstoqueService() {
+    public ClienteService() {
         emf = Persistence.createEntityManagerFactory("meu-persistence-unit");
         em = emf.createEntityManager();
     }
 
-    public void salvar(Estoque cliente) {
+    public void salvar(Cliente cliente) {
         em.getTransaction().begin();
         em.persist(cliente);
         em.getTransaction().commit();
     }
 
-    public void atualizar(Estoque cliente) {
+    public void atualizar(Cliente cliente) {
         em.getTransaction().begin();
         em.merge(cliente);
         em.getTransaction().commit();
     }
 
-    public void excluir(Estoque cliente) {
+    public void excluir(Cliente cliente) {
         em.getTransaction().begin();
         em.remove(em.contains(cliente) ? cliente : em.merge(cliente));
         em.getTransaction().commit();
     }
 
-    public List<Estoque> listarTodos() {
-        return em.createQuery("SELECT e FROM Estoque e", Estoque.class).getResultList();
+    public List<Cliente> listarTodos() {
+        return em.createQuery("SELECT c FROM Cliente c", Cliente.class).getResultList();
     }
 
     public void fechar() {
@@ -51,7 +52,7 @@ public class EstoqueService {
         emf.close();
     }
     
-    public Estoque buscarPorId(Long id) {
-    return em.find(Estoque.class, id);
+    public Cliente buscarPorId(Long id) {
+    return em.find(Cliente.class, id);
     }
 }

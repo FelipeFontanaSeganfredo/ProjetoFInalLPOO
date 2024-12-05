@@ -1,5 +1,5 @@
 
-package view;
+package view.caminhao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
