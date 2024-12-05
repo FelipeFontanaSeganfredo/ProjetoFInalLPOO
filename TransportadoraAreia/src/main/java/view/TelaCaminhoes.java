@@ -90,6 +90,11 @@ public class TelaCaminhoes extends javax.swing.JFrame {
         });
 
         jButton2.setText("Editar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setText("Excluir");
         btnExcluir.addActionListener(new java.awt.event.ActionListener() {
@@ -230,6 +235,11 @@ public class TelaCaminhoes extends javax.swing.JFrame {
         emf.close();
     }
     }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+         TelaEditarCaminhao telaEditarCaminhao = new TelaEditarCaminhao();
+         telaEditarCaminhao.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

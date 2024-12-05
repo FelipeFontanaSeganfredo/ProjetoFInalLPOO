@@ -1,16 +1,12 @@
-
 package model;
 
 import jakarta.persistence.*;
 
-// Comentei algumas coisas ainda não implementadas
-
 @Entity
 @Table(name = "tb_motorista")
 @EntityListeners(util.EntityLogListener.class)
-public class Motorista extends Pessoa{
+public class Motorista extends Pessoa {
 
-// atributos
     private float salario;
     private String cpf;
     private String cnh;
@@ -21,29 +17,21 @@ public class Motorista extends Pessoa{
 
     private String senha;
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-    
-// getters e setters 
+    // Getters e Setters
     public float getSalario() {
         return salario;
     }
 
     public void setSalario(float salario) {
         this.salario = salario;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
     public String getCnh() {
@@ -61,15 +49,18 @@ public class Motorista extends Pessoa{
     public void setCaminhao(Caminhao caminhao) {
         this.caminhao = caminhao;
     }
-    
-// toString
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    // Método toString para exibição no ComboBox
     @Override
     public String toString() {
-    //    return "Motorista{" + "salario=" + salario + ", cnh=" + cnh + ", caminhao=" + caminhao + '}';
-          return "Teste";
+        return this.getNome();
     }
-    
-// métodos especiais
-    // public void realizarViagem(){}
-    
 }
