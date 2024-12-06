@@ -80,6 +80,166 @@ O diagrama de classes segue os princípios de orientação a objetos e está est
 
 ![diagrama](https://github.com/user-attachments/assets/1911cbb0-e5d2-4902-99d3-47dba467be00)
 
+
+Segue a documentação detalhada da modelagem apresentada no diagrama:
+
+---
+
+### **Modelagem de Classes**
+
+O sistema é projetado para gerenciar operações logísticas em uma transportadora, utilizando conceitos de orientação a objetos. A seguir está a descrição das principais classes:
+
+#### **1. Pessoa**
+Classe base para representar informações comuns entre diferentes tipos de usuários no sistema.
+
+- **Atributos:**
+  - `id: int` - Identificador único.
+  - `nome: String` - Nome completo.
+  - `dataNascimento: Date` - Data de nascimento.
+  - `email: String` - Endereço de e-mail.
+  - `telefone: String` - Número de telefone.
+
+- **Métodos:**
+  - `toString(): String` - Representação textual do objeto.
+
+---
+
+#### **2. Cliente (Herdado de Pessoa)**
+Representa os clientes da transportadora.
+
+- **Atributos:**
+  - `cnpj: String` - Cadastro Nacional da Pessoa Jurídica.
+
+---
+
+#### **3. Administrador (Herdado de Pessoa)**
+Usuário responsável por gerenciar os dados da transportadora.
+
+- **Atributos:**
+  - `cpf: String` - Cadastro de Pessoa Física.
+
+- **Métodos:**
+  - `cadastraPedido(): Pedido` - Método para criar novos pedidos.
+  - `cadastraCliente(): Cliente` - Método para registrar novos clientes.
+  - `cadastraMotorista(): Motorista` - Método para registrar novos motoristas.
+  - `agendaViagem(): Viagem` - Método para programar uma nova viagem.
+
+---
+
+#### **4. Motorista (Herdado de Pessoa)**
+Responsável por conduzir caminhões e realizar viagens.
+
+- **Atributos:**
+  - `salario: float` - Salário do motorista.
+  - `cnh: String` - Carteira Nacional de Habilitação.
+  - `caminhao: Caminhao` - Caminhão designado ao motorista.
+
+- **Métodos:**
+  - `realizarViagem(): void` - Método para iniciar uma viagem.
+
+---
+
+#### **5. Pedido**
+Representa os pedidos realizados por clientes.
+
+- **Atributos:**
+  - `id: int` - Identificador único do pedido.
+  - `viagem: list<Viagem>` - Lista de viagens relacionadas ao pedido.
+
+- **Métodos:**
+  - `toString(): String` - Representação textual do objeto.
+
+---
+
+#### **6. Viagem**
+Representa uma viagem programada para transporte de carga.
+
+- **Atributos:**
+  - `id: int` - Identificador único da viagem.
+  - `valor: double` - Valor total da viagem.
+  - `destino: Destino` - Local para onde a carga será transportada.
+  - `motorista: Motorista` - Motorista responsável pela viagem.
+  - `cliente: Cliente` - Cliente que requisitou o transporte.
+  - `carga: Carga` - Carga transportada.
+
+- **Métodos:**
+  - `toString(): String` - Representação textual do objeto.
+
+---
+
+#### **7. Destino**
+Local onde a carga será entregue.
+
+- **Atributos:**
+  - `id: int` - Identificador único do destino.
+  - `nome: String` - Nome do destino.
+  - `distancia: double` - Distância em relação ao ponto de origem.
+
+- **Métodos:**
+  - `toString(): String` - Representação textual do objeto.
+
+---
+
+#### **8. Estoque**
+Gerencia os itens disponíveis para transporte.
+
+- **Atributos:**
+  - `id: int` - Identificador único do estoque.
+  - `volume: float` - Volume total de itens disponíveis.
+
+- **Métodos:**
+  - `toString(): String` - Representação textual do objeto.
+
+---
+
+#### **9. Caminhão**
+Representa os veículos utilizados para transporte.
+
+- **Atributos:**
+  - `id: int` - Identificador único do caminhão.
+  - `motorista: Motorista` - Motorista designado ao caminhão.
+  - `carga: Carga` - Carga transportada.
+
+- **Métodos:**
+  - `toString(): String` - Representação textual do objeto.
+
+---
+
+#### **10. Carga**
+Representa as cargas transportadas.
+
+- **Atributos:**
+  - `id: int` - Identificador único da carga.
+  - `peso: float` - Peso total da carga.
+  - `volume: float` - Volume total da carga.
+
+- **Métodos:**
+  - `toString(): String` - Representação textual do objeto.
+
+---
+
+### **Relacionamentos**
+
+1. **Pessoa e suas subclasses:**
+   - `Cliente` e `Administrador` herdam atributos e métodos comuns de `Pessoa`.
+
+2. **Administrador e as operações:**
+   - O `Administrador` gerencia `Pedido`, `Cliente`, `Motorista` e `Viagem`.
+
+3. **Pedido e Viagem:**
+   - Um `Pedido` pode conter várias `Viagens` (relação 1:N).
+
+4. **Viagem e outras classes:**
+   - Cada `Viagem` tem um `Motorista`, um `Cliente`, um `Destino` e uma `Carga`.
+
+5. **Caminhão e Motorista:**
+   - Um `Caminhão` é dirigido por um único `Motorista` (relação 1:1).
+
+6. **Estoque e Carga:**
+   - O `Estoque` pode conter várias `Cargas` (relação 1:N).
+
+---
+
 **Nesta versão do projeto nem todas as classes estão implementadas por completo.**
 
 
