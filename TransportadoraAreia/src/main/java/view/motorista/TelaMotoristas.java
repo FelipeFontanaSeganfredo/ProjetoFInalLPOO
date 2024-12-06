@@ -35,7 +35,7 @@ public class TelaMotoristas extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         tbMotorista = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         lblMotorista.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblMotorista.setText("Motorista");

@@ -85,7 +85,7 @@ private void carregarMotoristas() {
         cmbCaminhao = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         cmbMotorista.setModel(new javax.swing.DefaultComboBoxModel<>(new Motorista[0]));
         cmbMotorista.addActionListener(new java.awt.event.ActionListener() {

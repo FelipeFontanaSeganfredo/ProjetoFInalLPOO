@@ -19,6 +19,8 @@ public class JMainFrame extends javax.swing.JFrame {
     public JMainFrame() {
         initComponents();
         setLocationRelativeTo(null);
+        BotaoEntrar.setFocusable(false); // Remove o foco do botão "Entrar"
+        jLabel1.requestFocusInWindow();  // Move o foco para o título
     }
 
     /**
@@ -35,14 +37,14 @@ public class JMainFrame extends javax.swing.JFrame {
         BotaoSobre = new javax.swing.JButton();
         BotaoSair = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Transportadora de areia");
-        jLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         BotaoEntrar.setText("Entrar");
+        BotaoEntrar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         BotaoEntrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BotaoEntrarActionPerformed(evt);
