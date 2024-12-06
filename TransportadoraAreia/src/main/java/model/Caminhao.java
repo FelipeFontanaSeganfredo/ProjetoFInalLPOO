@@ -20,6 +20,16 @@ public class Caminhao {
     @JoinColumn(name = "carga_id") // Coluna na tabela Caminhao que referencia Carga
     private Carga carga;
     
+    private Boolean disponivel;
+
+    public void setDisponivel(Boolean disponivel) {
+        this.disponivel = disponivel;
+    }
+
+    public Boolean getDisponivel() {
+        return disponivel;
+    }
+    
 // getters e setters
     public int getId() {
         return id;
