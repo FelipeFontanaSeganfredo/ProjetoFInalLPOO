@@ -58,7 +58,7 @@ public class Caminhao {
 // toString
     @Override
     public String toString() {
-        return "Caminhao{" + "id=" + id + ", motorista=" + motorista + ", carga=" + carga + '}';
+        return "Caminhao: " + id;
     }
-    
+
 }
