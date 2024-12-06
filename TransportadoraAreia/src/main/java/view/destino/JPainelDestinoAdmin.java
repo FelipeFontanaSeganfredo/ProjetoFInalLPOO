@@ -23,6 +23,7 @@ public class JPainelDestinoAdmin extends javax.swing.JFrame {
         initComponents();
         atualizarTabela();
         configurarListeners(); // Configura os listeners no iníci
+        setLocationRelativeTo(null);
     }
     
     private void configurarListeners() {
@@ -34,53 +35,55 @@ public class JPainelDestinoAdmin extends javax.swing.JFrame {
 }
     
     private void atualizarTabela() {
-    try {
+        try {
         DestinoDAO destinoDAO = new DestinoDAO();
         List<Destino> destinos = destinoDAO.listarTodos();
+        atualizarTabelaComDados(destinos); // Reutiliza o método auxiliar
         destinoDAO.fechar();
-
-        // Configura o modelo da tabela
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        model.setRowCount(0); // Limpa a tabela
-
-        // Adiciona os dados na tabela
-        for (Destino destino : destinos) {
-            model.addRow(new Object[]{destino.getId(), destino.getNome(), destino.getDistancia()});
-        }
     } catch (Exception e) {
         JOptionPane.showMessageDialog(this, "Erro ao atualizar tabela: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
     }
 }
+    private void atualizarTabelaComDados(List<Destino> destinos) {
+    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+    model.setRowCount(0); // Limpa a tabela antes de preencher
+
+    for (Destino destino : destinos) {
+        model.addRow(new Object[]{destino.getId(), destino.getNome(), destino.getDistancia()});
+        }
+    }
+
+    
     
     private void filtrarTabela(String criterio) {
     try {
+        // Inicializa o DAO
         DestinoDAO destinoDAO = new DestinoDAO();
         List<Destino> destinos;
 
-        // Filtra os registros com base no critério selecionado
-        if (criterio.equals("Ordem Alfabética")) {
-            destinos = destinoDAO.listarPorOrdemAlfabetica();
-        } else if (criterio.equals("Distância")) {
-            destinos = destinoDAO.listarPorDistancia();
-        } else {
-            destinos = destinoDAO.listarTodos(); // Sem filtro
+        // Verifica o critério do combo box e filtra os registros
+        switch (criterio) {
+            case "Ordem Alfabética":
+                destinos = destinoDAO.listarPorOrdemAlfabetica();
+                break;
+            case "Distância":
+                destinos = destinoDAO.listarPorDistancia();
+                break;
+            default:
+                destinos = destinoDAO.listarTodos();
+                break;
         }
 
+        // Atualiza a tabela com os resultados
+        atualizarTabelaComDados(destinos);
+
+        // Fecha o DAO
         destinoDAO.fechar();
 
-        // Configura o modelo da tabela
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        model.setRowCount(0); // Limpa a tabela
-
-        // Adiciona os dados filtrados na tabela
-        for (Destino destino : destinos) {
-            model.addRow(new Object[]{destino.getId(), destino.getNome(), destino.getDistancia()});
-        }
     } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Erro ao filtrar tabela: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Erro ao aplicar o filtro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
     }
 }
-
 
 
     /**
@@ -116,7 +119,7 @@ public class JPainelDestinoAdmin extends javax.swing.JFrame {
                 {null, null, null}
             },
             new String [] {
-                "Id", "Nome", "Distância"
+                "Id", "Nome", "Distância (km)"
             }
         ) {
             Class[] types = new Class [] {
@@ -137,6 +140,11 @@ public class JPainelDestinoAdmin extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
 
         BotaoEditar.setText("Editar");
+        BotaoEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotaoEditarActionPerformed(evt);
+            }
+        });
 
         BotaoNovo.setText("Novo");
         BotaoNovo.addActionListener(new java.awt.event.ActionListener() {
@@ -214,7 +222,10 @@ public class JPainelDestinoAdmin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
+        String criterio = (String) jComboBox1.getSelectedItem();
+        if (criterio != null && !criterio.trim().isEmpty()) {
+            filtrarTabela(criterio);
+        }
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void BotaoNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoNovoActionPerformed
@@ -258,6 +269,36 @@ public class JPainelDestinoAdmin extends javax.swing.JFrame {
             javax.swing.JOptionPane.showMessageDialog(this, "Selecione um destino para excluir.");
     }                                         
     }//GEN-LAST:event_BotaoExcluirActionPerformed
+
+    private void BotaoEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoEditarActionPerformed
+        int linhaSelecionada = jTable1.getSelectedRow();
+
+        if (linhaSelecionada != -1) {
+            // Obtém o ID da linha selecionada
+            Object valorId = jTable1.getValueAt(linhaSelecionada, 0);
+
+            if (valorId instanceof Integer) {
+                Integer id = (Integer) valorId;
+
+                // Abre a tela de edição, passando o ID selecionado
+                JPainelDestinoAdminEditar telaEditar = new JPainelDestinoAdminEditar(id);
+
+                // Adiciona um evento para atualizar a tabela quando a tela de edição for fechada
+                telaEditar.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosed(java.awt.event.WindowEvent e) {
+                        atualizarTabela(); // Atualiza a tabela ao fechar a tela de edição
+                    }
+                });
+
+                telaEditar.setVisible(true);
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "ID inválido.");
+            }
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Selecione um destino para editar.");
+        }
+    }//GEN-LAST:event_BotaoEditarActionPerformed
 
     /**
      * @param args the command line arguments

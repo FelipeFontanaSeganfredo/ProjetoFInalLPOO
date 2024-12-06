@@ -110,7 +110,7 @@
               <Table columnCount="3" rowCount="4">
                 <Column editable="false" title="Id" type="java.lang.Integer"/>
                 <Column editable="false" title="Nome" type="java.lang.String"/>
-                <Column editable="false" title="Dist&#xe2;ncia" type="java.lang.Double"/>
+                <Column editable="false" title="Dist&#xe2;ncia (km)" type="java.lang.Double"/>
               </Table>
             </Property>
           </Properties>
@@ -121,6 +121,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Editar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BotaoEditarActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="BotaoNovo">
       <Properties>
