@@ -12,15 +12,77 @@ import model.Destino;
  *
  * @author User PC
  */
-public class JPainelDestinoAdminNovo extends javax.swing.JFrame {
+public class JPainelDestinoAdminEditar extends javax.swing.JFrame {
 
     /**
-     * Creates new form JPainelDestinoAdminNovo
+     * Creates new form JPainelDestinoAdminEditar
      */
-    public JPainelDestinoAdminNovo() {
+    
+    private Integer id;
+    private Destino destinoAtual;
+    private DestinoDAO destinoDAO;
+    
+    /**
+     * Creates new form JPainelDestinoAdminEditar
+     * @param idDestino
+     */
+    public JPainelDestinoAdminEditar(Integer idDestino) {
         initComponents();
         setLocationRelativeTo(null);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        this.id = idDestino;
+        this.destinoDAO = new DestinoDAO();
+
+        // Carregar dados do destino
+        carregarDestino();
     }
+
+    private void carregarDestino() {
+        try {
+            destinoAtual = destinoDAO.buscarPorId(id.longValue());
+            if (destinoAtual != null) {
+                jTextField1.setText(destinoAtual.getNome());
+                jTextField2.setText(String.valueOf(destinoAtual.getDistancia()));
+            } else {
+                JOptionPane.showMessageDialog(this, "Destino não encontrado.");
+                dispose();
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao carregar destino: " + e.getMessage());
+            dispose();
+        }
+    }
+
+    private void salvarDestino() {
+        try {
+            String nome = jTextField1.getText();
+            String distanciaStr = jTextField2.getText();
+
+            if (nome.isEmpty() || distanciaStr.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Todos os campos devem ser preenchidos.");
+                return;
+            }
+
+            double distancia;
+            try {
+                distancia = Double.parseDouble(distanciaStr);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Distância deve ser um número válido.");
+                return;
+            }
+
+            destinoAtual.setNome(nome);
+            destinoAtual.setDistancia(distancia);
+
+            destinoDAO.atualizar(destinoAtual);
+            JOptionPane.showMessageDialog(this, "Destino atualizado com sucesso.");
+            dispose();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao atualizar destino: " + e.getMessage());
+        }
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -32,8 +94,8 @@ public class JPainelDestinoAdminNovo extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         BotaoSalvar = new javax.swing.JButton();
@@ -42,12 +104,12 @@ public class JPainelDestinoAdminNovo extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Cadastrar");
+        jLabel1.setText("Editar");
         jLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel2.setText("None:");
+        jLabel2.setText("Nome:");
 
-        jLabel3.setText("Distância:");
+        jLabel3.setText("Distância (km):");
 
         jTextField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -73,30 +135,30 @@ public class JPainelDestinoAdminNovo extends javax.swing.JFrame {
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
                     .addContainerGap()))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(16, Short.MAX_VALUE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(181, Short.MAX_VALUE)))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(15, Short.MAX_VALUE)))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(181, Short.MAX_VALUE)))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(15, Short.MAX_VALUE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(19, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(181, Short.MAX_VALUE)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(17, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(177, Short.MAX_VALUE)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(16, Short.MAX_VALUE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(17, Short.MAX_VALUE)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(150, Short.MAX_VALUE)
-                    .addComponent(BotaoSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(152, Short.MAX_VALUE)))
+                    .addContainerGap(164, Short.MAX_VALUE)
+                    .addComponent(BotaoSalvar)
+                    .addContainerGap(164, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -104,18 +166,18 @@ public class JPainelDestinoAdminNovo extends javax.swing.JFrame {
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(259, Short.MAX_VALUE)))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(264, Short.MAX_VALUE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(91, Short.MAX_VALUE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(187, Short.MAX_VALUE)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(65, Short.MAX_VALUE)
+                    .addContainerGap(66, Short.MAX_VALUE)
                     .addComponent(jLabel2)
-                    .addContainerGap(219, Short.MAX_VALUE)))
+                    .addContainerGap(218, Short.MAX_VALUE)))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(90, Short.MAX_VALUE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(188, Short.MAX_VALUE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addContainerGap(142, Short.MAX_VALUE)
@@ -123,14 +185,14 @@ public class JPainelDestinoAdminNovo extends javax.swing.JFrame {
                     .addContainerGap(142, Short.MAX_VALUE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(169, Short.MAX_VALUE)
+                    .addContainerGap(171, Short.MAX_VALUE)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(109, Short.MAX_VALUE)))
+                    .addContainerGap(107, Short.MAX_VALUE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(230, Short.MAX_VALUE)
-                    .addComponent(BotaoSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(37, Short.MAX_VALUE)))
+                    .addContainerGap(235, Short.MAX_VALUE)
+                    .addComponent(BotaoSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(33, Short.MAX_VALUE)))
         );
 
         pack();
@@ -141,49 +203,7 @@ public class JPainelDestinoAdminNovo extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField2ActionPerformed
 
     private void BotaoSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoSalvarActionPerformed
-        // Obtém os valores dos campos
-    String nome = jTextField1.getText().trim();
-    String distancia = jTextField2.getText().trim();
-
-    // Valida os campos
-    if (nome.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "O campo 'Nome' não pode estar vazio.", "Erro", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    if (distancia.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "O campo 'Distância' não pode estar vazio.", "Erro", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    Double distancia_d;
-    try {
-        distancia_d = Double.parseDouble(distancia);
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "O campo 'Distância' deve conter um valor numérico válido.", "Erro", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    // Cria o objeto destino
-    Destino destino = new Destino();
-    destino.setNome(nome);
-    destino.setDistancia(distancia_d);
-
-    // Salva no banco de dados usando o DAO
-    try {
-        DestinoDAO destinoDAO = new DestinoDAO();
-        destinoDAO.salvar(destino);
-        destinoDAO.fechar(); // Fecha o EntityManager
-
-        JOptionPane.showMessageDialog(this, "Destino salvo com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-        
-        // Limpa os campos
-        jTextField1.setText("");
-        jTextField2.setText("");
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Erro ao salvar o destino: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-    }
-        
+        salvarDestino();
     }//GEN-LAST:event_BotaoSalvarActionPerformed
 
     /**
@@ -203,20 +223,21 @@ public class JPainelDestinoAdminNovo extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JPainelDestinoAdminNovo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JPainelDestinoAdminEditar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JPainelDestinoAdminNovo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JPainelDestinoAdminEditar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JPainelDestinoAdminNovo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JPainelDestinoAdminEditar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JPainelDestinoAdminNovo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JPainelDestinoAdminEditar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JPainelDestinoAdminNovo().setVisible(true);
+                Integer id = 1;
+                new JPainelDestinoAdminEditar(id).setVisible(true);
             }
         });
     }
