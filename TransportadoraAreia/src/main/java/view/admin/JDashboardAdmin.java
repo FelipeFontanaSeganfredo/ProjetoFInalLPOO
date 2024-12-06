@@ -4,6 +4,7 @@
  */
 package view.admin;
 
+import view.caminhao.TelaCaminhao;
 import view.estoque.JPainelEstoqueAdmin;
 import view.features.JLogs;
 import view.features.JMudarSenha;
@@ -218,6 +219,9 @@ public class JDashboardAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_btnClientesActionPerformed
 
     private void btnCaminhoesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCaminhoesActionPerformed
+        TelaCaminhao telaCaminhao = new TelaCaminhao();
+        telaCaminhao.setVisible(true);
+        telaCaminhao.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnCaminhoesActionPerformed
 
     private void btnEstoqueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEstoqueMouseClicked

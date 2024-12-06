@@ -141,6 +141,7 @@ public class TelaMotorista extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         TelaNovoMotorista telaNovoMotorista = new TelaNovoMotorista(this);
         telaNovoMotorista.setVisible(true);
+        telaNovoMotorista.setLocationRelativeTo(null);
         atualizarTabela();
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -209,6 +210,7 @@ public class TelaMotorista extends javax.swing.JFrame {
         // Abrir a tela de edição
         TelaEditarMotorista telaEditar = new TelaEditarMotorista(this, motorista);
         telaEditar.setVisible(true);
+        telaEditar.setLocationRelativeTo(null);
 
     } catch (Exception e) {
         javax.swing.JOptionPane.showMessageDialog(this, "Erro ao editar motorista: " + e.getMessage());

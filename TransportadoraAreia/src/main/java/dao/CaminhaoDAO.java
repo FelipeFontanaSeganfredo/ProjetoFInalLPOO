@@ -1,63 +1,82 @@
 package dao;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
 import model.Caminhao;
-
+import jakarta.persistence.*;
 import java.util.List;
 
 public class CaminhaoDAO {
 
-    private EntityManagerFactory emf;
-    private EntityManager em;
+    private EntityManagerFactory entityManagerFactory;
+    private EntityManager entityManager;
 
-    // Construtor que inicializa o EntityManagerFactory e EntityManager
     public CaminhaoDAO() {
-        emf = Persistence.createEntityManagerFactory("meu-persistence-unit");
-        em = emf.createEntityManager();
+        // Inicializa a fábrica de gerenciadores de entidades
+        entityManagerFactory = Persistence.createEntityManagerFactory("meu-persistence-unit");
+        entityManager = entityManagerFactory.createEntityManager();
     }
 
-    // Método para salvar um novo caminhão
+    // Criar (Create)
     public void salvar(Caminhao caminhao) {
-        em.getTransaction().begin();
-        em.persist(caminhao);
-        em.getTransaction().commit();
+        try {
+            entityManager.getTransaction().begin();
+            entityManager.persist(caminhao); // Salva o objeto no banco de dados
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+            }
+            e.printStackTrace();
+        }
     }
 
-    // Método para atualizar informações de um caminhão existente
-    public void atualizar(Caminhao caminhao) {
-        em.getTransaction().begin();
-        em.merge(caminhao);
-        em.getTransaction().commit();
-    }
-
-    // Método para excluir um caminhão
-    public void excluir(Caminhao caminhao) {
-        em.getTransaction().begin();
-        em.remove(em.contains(caminhao) ? caminhao : em.merge(caminhao));
-        em.getTransaction().commit();
-    }
-
-    // Método para buscar um caminhão pelo ID
+    // Ler (Read)
     public Caminhao buscarPorId(int id) {
-        return em.find(Caminhao.class, id);
+        return entityManager.find(Caminhao.class, id); // Busca o Caminhao pelo ID
     }
 
-    // Método para listar todos os caminhões
     public List<Caminhao> listarTodos() {
-        return em.createQuery("SELECT c FROM Caminhao c", Caminhao.class).getResultList();
+        TypedQuery<Caminhao> query = entityManager.createQuery("SELECT c FROM Caminhao c", Caminhao.class);
+        return query.getResultList(); // Retorna uma lista de todos os caminhões
     }
 
-    // Método para listar caminhões disponíveis
-    public List<Caminhao> listarDisponiveis() {
-        return em.createQuery("SELECT c FROM Caminhao c WHERE c.disponivel = TRUE", Caminhao.class)
-                 .getResultList();
+    // Atualizar (Update)
+    public void atualizar(Caminhao caminhao) {
+        try {
+            entityManager.getTransaction().begin();
+            entityManager.merge(caminhao); // Atualiza o objeto no banco de dados
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+            }
+            e.printStackTrace();
+        }
     }
 
-    // Fechar os recursos
+    // Deletar (Delete)
+    public void deletar(int id) {
+        try {
+            Caminhao caminhao = buscarPorId(id);
+            if (caminhao != null) {
+                entityManager.getTransaction().begin();
+                entityManager.remove(caminhao); // Remove o objeto do banco de dados
+                entityManager.getTransaction().commit();
+            }
+        } catch (Exception e) {
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+            }
+            e.printStackTrace();
+        }
+    }
+
+    // Fechar a conexão com o banco
     public void fechar() {
-        em.close();
-        emf.close();
+        if (entityManager != null && entityManager.isOpen()) {
+            entityManager.close();
+        }
+        if (entityManagerFactory != null && entityManagerFactory.isOpen()) {
+            entityManagerFactory.close();
+        }
     }
 }
