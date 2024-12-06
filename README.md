@@ -80,4 +80,6 @@ O diagrama de classes segue os princípios de orientação a objetos e está est
 
 ![diagrama](https://github.com/user-attachments/assets/1911cbb0-e5d2-4902-99d3-47dba467be00)
 
+**Nesta versão do projeto nem todas as classes estão implementadas por completo.**
+
 
