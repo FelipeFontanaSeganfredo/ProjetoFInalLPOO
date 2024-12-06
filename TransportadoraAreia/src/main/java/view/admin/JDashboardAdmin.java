@@ -8,10 +8,9 @@ import view.estoque.JPainelEstoqueAdmin;
 import view.features.JLogs;
 import view.features.JMudarSenha;
 import view.home.JMinhasInformacoes;
-import view.motorista.TelaMotoristas;
 import view.clientes.JPainelClientesAdmin;
-import view.caminhao.TelaCaminhoes;
 import view.destino.JPainelDestinoAdmin;
+import view.motorista.TelaMotorista;
 
 /**
  *
@@ -206,7 +205,7 @@ public class JDashboardAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_BotaoLogsMouseClicked
 
     private void btnMotoristasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMotoristasActionPerformed
-        TelaMotoristas telaMotorista = new TelaMotoristas();
+        TelaMotorista telaMotorista = new TelaMotorista();
         telaMotorista.setVisible(true);
     }//GEN-LAST:event_btnMotoristasActionPerformed
 
@@ -219,8 +218,6 @@ public class JDashboardAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_btnClientesActionPerformed
 
     private void btnCaminhoesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCaminhoesActionPerformed
-        TelaCaminhoes telaCaminhoes = new TelaCaminhoes();
-        telaCaminhoes.setVisible(true);
     }//GEN-LAST:event_btnCaminhoesActionPerformed
 
     private void btnEstoqueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEstoqueMouseClicked
