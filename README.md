@@ -81,12 +81,3 @@ O diagrama de classes segue os princípios de orientação a objetos e está est
 ![diagrama](https://github.com/user-attachments/assets/1911cbb0-e5d2-4902-99d3-47dba467be00)
 
 
----
-
-### **Contato**
-
-Em caso de dúvidas ou sugestões, entre em contato com:
-- **Felipe Fontana Seganfredo** - [LinkedIn](https://www.linkedin.com/in/felipe-fontana-seganfredo)
-- Ou crie uma **Issue** neste repositório.
-
-
