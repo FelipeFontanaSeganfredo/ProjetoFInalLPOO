@@ -11,8 +11,15 @@ public class Viagem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String localOrigem;
-    private String localDestino;
+    private Double valor;
+
+    public void setValor(Double valor) {
+        this.valor = valor;
+    }
+
+    public Double getValor() {
+        return valor;
+    }
     
     @OneToOne
     @JoinColumn(name = "motorista_id")    
@@ -23,6 +30,18 @@ public class Viagem {
     @OneToOne
     @JoinColumn(name = "carga_id") 
     private Carga carga;
+    
+    @ManyToOne
+    @JoinColumn (name = "destino_id")
+    private Destino destino;
+
+    public void setDestino(Destino destino) {
+        this.destino = destino;
+    }
+
+    public Destino getDestino() {
+        return destino;
+    }
 
 // getters e setters
     public int getId() {
@@ -31,22 +50,6 @@ public class Viagem {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getLocalOrigem() {
-        return localOrigem;
-    }
-
-    public void setLocalOrigem(String localOrigem) {
-        this.localOrigem = localOrigem;
-    }
-
-    public String getLocalDestino() {
-        return localDestino;
-    }
-
-    public void setLocalDestino(String localDestino) {
-        this.localDestino = localDestino;
     }
 
     public Motorista getMotorista() {
@@ -76,7 +79,7 @@ public class Viagem {
 // toString
     @Override
     public String toString() {
-        return "Viagem{" + "id=" + id + ", localOrigem=" + localOrigem + ", localDestino=" + localDestino + ", motorista=" + motorista + ", cliente=" + cliente + ", carga=" + carga + '}';
+        return "Viagem{" + "id=" + id + ", motorista=" + motorista + ", cliente=" + cliente + ", carga=" + carga + '}';
     }
 
 }
