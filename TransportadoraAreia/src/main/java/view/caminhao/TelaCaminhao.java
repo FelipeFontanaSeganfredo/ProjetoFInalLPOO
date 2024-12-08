@@ -21,23 +21,35 @@ public class TelaCaminhao extends javax.swing.JFrame {
      */
     public TelaCaminhao() {
         initComponents();
-        carregarTabelaCaminhoes();
-    }
+       carregarTabelaCaminhoes("Todos"); // Exibe todos os caminhões por padrão
+}
     
-    public void carregarTabelaCaminhoes() {
+    
+    
+    public void carregarTabelaCaminhoes(String filtro) {
     CaminhaoDAO caminhaoDAO = new CaminhaoDAO();
-    List<Caminhao> caminhoes = caminhaoDAO.listarTodos(); // Método no DAO para listar todos os caminhões
+    List<Caminhao> caminhoes = caminhaoDAO.listarTodos(); // Recupera todos os caminhões
 
     DefaultTableModel model = (DefaultTableModel) tbMotoristas.getModel();
     model.setRowCount(0); // Limpa a tabela
 
     for (Caminhao caminhao : caminhoes) {
-        model.addRow(new Object[]{
+        boolean disponivel = caminhao.getDisponivel() != null && caminhao.getDisponivel();
+
+        // Aplica o filtro
+        if ("Disponíveis".equals(filtro) && !disponivel) {
+            continue;
+        }
+        if ("Indisponíveis".equals(filtro) && disponivel) {
+            continue;
+        }
+
+        model.addRow(new Object[] {
             caminhao.getId(),
             caminhao.getMotorista(),
             caminhao.getCarga() == null ? "Sem carga" : caminhao.getCarga(),
-            caminhao.getDisponivel() != null && caminhao.getDisponivel() ? true : false        
-    });
+            disponivel // O valor booleano será renderizado como "true" ou "false"
+        });
     }
 }
 
@@ -127,7 +139,7 @@ public class TelaCaminhao extends javax.swing.JFrame {
 
         jLabel1.setText("Filtrar por:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Disponíveis", "Indisponíveis"}));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -185,7 +197,7 @@ public class TelaCaminhao extends javax.swing.JFrame {
         
         @Override
         public void windowClosed(java.awt.event.WindowEvent e) {
-            carregarTabelaCaminhoes(); // Atualiza a tabela
+            carregarTabelaCaminhoes("Todos"); // Atualiza a tabela
         }
     });
         
@@ -208,7 +220,7 @@ public class TelaCaminhao extends javax.swing.JFrame {
         telaEditarCaminhao.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent e) {
-                carregarTabelaCaminhoes(); // Atualiza a tabela ao fechar a tela de edição
+                carregarTabelaCaminhoes("Todos"); // Atualiza a tabela ao fechar a tela de edição
             }
         });
     } else {
@@ -242,7 +254,7 @@ public class TelaCaminhao extends javax.swing.JFrame {
 
         if (sucesso) {
             JOptionPane.showMessageDialog(this, "Caminhão removido com sucesso!");
-            carregarTabelaCaminhoes(); // Atualiza a tabela
+            carregarTabelaCaminhoes("Todos"); // Atualiza a tabela
         } else {
             JOptionPane.showMessageDialog(this, "Erro ao remover o caminhão!", "Erro", JOptionPane.ERROR_MESSAGE);
         }
@@ -255,7 +267,8 @@ public class TelaCaminhao extends javax.swing.JFrame {
     }//GEN-LAST:event_tbMotoristasMouseClicked
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
+        String filtroSelecionado = (String) jComboBox1.getSelectedItem();
+        carregarTabelaCaminhoes(filtroSelecionado);
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     /**
