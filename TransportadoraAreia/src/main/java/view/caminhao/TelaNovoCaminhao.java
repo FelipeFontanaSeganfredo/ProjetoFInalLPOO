@@ -4,6 +4,13 @@
  */
 package view.caminhao;
 
+import dao.CaminhaoDAO;
+import dao.MotoristaDAO;
+import java.util.List;
+import javax.swing.JOptionPane;
+import model.Caminhao;
+import model.Motorista;
+
 /**
  *
  * @author User
@@ -15,7 +22,46 @@ public class TelaNovoCaminhao extends javax.swing.JFrame {
      */
     public TelaNovoCaminhao() {
         initComponents();
+        carregarMotoristas();
     }
+    
+    private void criarCaminhao() {
+    CaminhaoDAO caminhaoDAO = new CaminhaoDAO();
+    Caminhao caminhao = new Caminhao();
+
+    // Obtém o motorista selecionado
+    Motorista motoristaSelecionado = (Motorista) cmbMotorista.getSelectedItem();
+
+    // Validação básica
+    if (motoristaSelecionado == null) {
+        JOptionPane.showMessageDialog(this, "Selecione um motorista válido!");
+        return;
+    }
+
+    // Configura os dados do caminhão
+    caminhao.setMotorista(motoristaSelecionado);
+    caminhao.setDisponivel(false); // Novo caminhão é indisponível por padrão
+
+    // Salva no banco de dados
+    caminhaoDAO.salvar(caminhao);
+
+    // Mostra mensagem de sucesso e fecha a tela
+    JOptionPane.showMessageDialog(this, "Caminhão criado com sucesso!");
+    this.dispose(); // Fecha a tela de criação
+}
+
+    
+    private void carregarMotoristas() {
+        MotoristaDAO motoristaDAO = new MotoristaDAO();
+    List<Motorista> motoristas = motoristaDAO.listarTodos(); // Método listarTodos no MotoristaDAO
+    cmbMotorista.removeAllItems(); // Limpa o JComboBox
+
+    for (Motorista motorista : motoristas) {
+        cmbMotorista.addItem(motorista); // Adiciona o objeto Motorista
+    }
+    
+}
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -28,12 +74,10 @@ public class TelaNovoCaminhao extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jButton1 = new javax.swing.JButton();
+        cmbMotorista = new javax.swing.JComboBox<>();
+        btnCriarCaminhao = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -42,23 +86,19 @@ public class TelaNovoCaminhao extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setText("Motorista");
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel3.setText("Disponível");
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        cmbMotorista.setModel(new javax.swing.DefaultComboBoxModel<>(new Motorista[] {}));
+        cmbMotorista.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                cmbMotoristaActionPerformed(evt);
             }
         });
 
-        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+        btnCriarCaminhao.setText("Criar");
+        btnCriarCaminhao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox1ActionPerformed(evt);
+                btnCriarCaminhaoActionPerformed(evt);
             }
         });
-
-        jButton1.setText("Criar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -70,18 +110,14 @@ public class TelaNovoCaminhao extends javax.swing.JFrame {
                 .addGap(18, 18, 18))
             .addGroup(layout.createSequentialGroup()
                 .addGap(117, 117, 117)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jCheckBox1))
+                .addComponent(jLabel2)
+                .addGap(9, 9, 9)
+                .addComponent(cmbMotorista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(91, 91, 91))
+                .addComponent(btnCriarCaminhao)
+                .addGap(93, 93, 93))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -91,26 +127,22 @@ public class TelaNovoCaminhao extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jCheckBox1))
+                    .addComponent(cmbMotorista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jButton1)
-                .addContainerGap(146, Short.MAX_VALUE))
+                .addComponent(btnCriarCaminhao)
+                .addContainerGap(172, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void cmbMotoristaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbMotoristaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    }//GEN-LAST:event_cmbMotoristaActionPerformed
 
-    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox1ActionPerformed
+    private void btnCriarCaminhaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCriarCaminhaoActionPerformed
+        criarCaminhao();
+    }//GEN-LAST:event_btnCriarCaminhaoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -148,11 +180,9 @@ public class TelaNovoCaminhao extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JButton btnCriarCaminhao;
+    private javax.swing.JComboBox<Motorista> cmbMotorista;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     // End of variables declaration//GEN-END:variables
 }

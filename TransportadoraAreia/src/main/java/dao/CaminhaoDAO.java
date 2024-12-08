@@ -1,82 +1,88 @@
 package dao;
 
 import model.Caminhao;
-import jakarta.persistence.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 import java.util.List;
 
 public class CaminhaoDAO {
 
-    private EntityManagerFactory entityManagerFactory;
-    private EntityManager entityManager;
+    private EntityManagerFactory emf;
 
     public CaminhaoDAO() {
-        // Inicializa a fábrica de gerenciadores de entidades
-        entityManagerFactory = Persistence.createEntityManagerFactory("meu-persistence-unit");
-        entityManager = entityManagerFactory.createEntityManager();
+        emf = Persistence.createEntityManagerFactory("meu-persistence-unit"); // Substitua pelo nome da unidade no persistence.xml
     }
 
-    // Criar (Create)
-    public void salvar(Caminhao caminhao) {
-        try {
-            entityManager.getTransaction().begin();
-            entityManager.persist(caminhao); // Salva o objeto no banco de dados
-            entityManager.getTransaction().commit();
-        } catch (Exception e) {
-            if (entityManager.getTransaction().isActive()) {
-                entityManager.getTransaction().rollback();
-            }
-            e.printStackTrace();
+  public void salvar(Caminhao caminhao) {
+    EntityManager em = emf.createEntityManager();
+    try {
+        em.getTransaction().begin();
+        if (caminhao.getId() == null || em.find(Caminhao.class, caminhao.getId()) == null) {
+            em.persist(caminhao); // Insere um novo caminhão
+        } else {
+            em.merge(caminhao); // Atualiza o caminhão existente
         }
+        em.getTransaction().commit();
+    } catch (Exception e) {
+        if (em.getTransaction().isActive()) {
+            em.getTransaction().rollback();
+        }
+        e.printStackTrace();
+    } finally {
+        em.close();
     }
-
-    // Ler (Read)
-    public Caminhao buscarPorId(int id) {
-        return entityManager.find(Caminhao.class, id); // Busca o Caminhao pelo ID
+}
+    
+    public boolean remover(int id) {
+    EntityManager em = emf.createEntityManager();
+    try {
+        em.getTransaction().begin();
+        Caminhao caminhao = em.find(Caminhao.class, id);
+        if (caminhao != null) {
+            em.remove(caminhao); // Remove o caminhão encontrado
+            em.getTransaction().commit();
+            return true;
+        }
+        return false; // Caminhão não encontrado
+    } catch (Exception e) {
+        em.getTransaction().rollback();
+        e.printStackTrace();
+        return false;
+    } finally {
+        em.close();
     }
-
+}
+    
     public List<Caminhao> listarTodos() {
-        TypedQuery<Caminhao> query = entityManager.createQuery("SELECT c FROM Caminhao c", Caminhao.class);
-        return query.getResultList(); // Retorna uma lista de todos os caminhões
-    }
-
-    // Atualizar (Update)
-    public void atualizar(Caminhao caminhao) {
+        EntityManager em = emf.createEntityManager();
         try {
-            entityManager.getTransaction().begin();
-            entityManager.merge(caminhao); // Atualiza o objeto no banco de dados
-            entityManager.getTransaction().commit();
-        } catch (Exception e) {
-            if (entityManager.getTransaction().isActive()) {
-                entityManager.getTransaction().rollback();
-            }
-            e.printStackTrace();
+            return em.createQuery("SELECT c FROM Caminhao c", Caminhao.class).getResultList();
+        } finally {
+            em.close();
         }
     }
+    
+    public Caminhao buscarPorMotorista(String motorista) {
+    EntityManager em = emf.createEntityManager();
+    try {
+        return em.createQuery("SELECT c FROM Caminhao c WHERE c.motorista = :motorista", Caminhao.class)
+                .setParameter("motorista", motorista)
+                .getResultStream()
+                .findFirst() // Retorna o primeiro resultado, se houver
+                .orElse(null);
+    } finally {
+        em.close();
+    }
+}
 
-    // Deletar (Delete)
-    public void deletar(int id) {
-        try {
-            Caminhao caminhao = buscarPorId(id);
-            if (caminhao != null) {
-                entityManager.getTransaction().begin();
-                entityManager.remove(caminhao); // Remove o objeto do banco de dados
-                entityManager.getTransaction().commit();
-            }
-        } catch (Exception e) {
-            if (entityManager.getTransaction().isActive()) {
-                entityManager.getTransaction().rollback();
-            }
-            e.printStackTrace();
-        }
+public Caminhao buscarPorId(int id) {
+    EntityManager em = emf.createEntityManager();
+    try {
+        return em.find(Caminhao.class, id);
+    } finally {
+        em.close();
     }
-
-    // Fechar a conexão com o banco
-    public void fechar() {
-        if (entityManager != null && entityManager.isOpen()) {
-            entityManager.close();
-        }
-        if (entityManagerFactory != null && entityManagerFactory.isOpen()) {
-            entityManagerFactory.close();
-        }
-    }
+}
+    
 }

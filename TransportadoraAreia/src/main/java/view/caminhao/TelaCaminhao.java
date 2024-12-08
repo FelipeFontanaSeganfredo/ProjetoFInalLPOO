@@ -4,6 +4,12 @@
  */
 package view.caminhao;
 
+import dao.CaminhaoDAO;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import model.Caminhao;
+
 /**
  *
  * @author User
@@ -15,7 +21,25 @@ public class TelaCaminhao extends javax.swing.JFrame {
      */
     public TelaCaminhao() {
         initComponents();
+        carregarTabelaCaminhoes();
     }
+    
+    public void carregarTabelaCaminhoes() {
+    CaminhaoDAO caminhaoDAO = new CaminhaoDAO();
+    List<Caminhao> caminhoes = caminhaoDAO.listarTodos(); // Método no DAO para listar todos os caminhões
+
+    DefaultTableModel model = (DefaultTableModel) tbMotoristas.getModel();
+    model.setRowCount(0); // Limpa a tabela
+
+    for (Caminhao caminhao : caminhoes) {
+        model.addRow(new Object[]{
+            caminhao.getId(),
+            caminhao.getMotorista(),
+            caminhao.getCarga() == null ? "Sem carga" : caminhao.getCarga(),
+            caminhao.getDisponivel() != null && caminhao.getDisponivel() ? true : false        
+    });
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -32,6 +56,8 @@ public class TelaCaminhao extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbMotoristas = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -99,6 +125,15 @@ public class TelaCaminhao extends javax.swing.JFrame {
             tbMotoristas.getColumnModel().getColumn(3).setResizable(false);
         }
 
+        jLabel1.setText("Filtrar por:");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -114,7 +149,12 @@ public class TelaCaminhao extends javax.swing.JFrame {
                         .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -127,8 +167,12 @@ public class TelaCaminhao extends javax.swing.JFrame {
                     .addComponent(jButton1)
                     .addComponent(jButton2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         pack();
@@ -137,20 +181,82 @@ public class TelaCaminhao extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         TelaNovoCaminhao telaNovoCaminhao = new TelaNovoCaminhao();
         telaNovoCaminhao.setVisible(true);
+        telaNovoCaminhao.addWindowListener(new java.awt.event.WindowAdapter() {
+        
+        @Override
+        public void windowClosed(java.awt.event.WindowEvent e) {
+            carregarTabelaCaminhoes(); // Atualiza a tabela
+        }
+    });
+        
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       
+     int linhaSelecionada = tbMotoristas.getSelectedRow();
+    if (linhaSelecionada == -1) {
+        JOptionPane.showMessageDialog(this, "Selecione um caminhão para editar!", "Erro", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    int id = (int) tbMotoristas.getValueAt(linhaSelecionada, 0);
+    CaminhaoDAO caminhaoDAO = new CaminhaoDAO();
+    Caminhao caminhao = caminhaoDAO.buscarPorId(id);
+
+    if (caminhao != null) {
+        TelaEditarCaminhao telaEditarCaminhao = new TelaEditarCaminhao(caminhao);
+        telaEditarCaminhao.setVisible(true);
+        telaEditarCaminhao.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                carregarTabelaCaminhoes(); // Atualiza a tabela ao fechar a tela de edição
+            }
+        });
+    } else {
+        JOptionPane.showMessageDialog(this, "Caminhão não encontrado!", "Erro", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // Verifica se uma linha foi selecionada
+    int linhaSelecionada = tbMotoristas.getSelectedRow();
+    if (linhaSelecionada == -1) {
+        JOptionPane.showMessageDialog(this, "Selecione um caminhão para remover!", "Erro", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
 
-   
+    // Obtém o ID do caminhão selecionado
+    int id = (int) tbMotoristas.getValueAt(linhaSelecionada, 0);
+
+    // Confirma a exclusão
+    int confirmacao = JOptionPane.showConfirmDialog(
+        this, 
+        "Tem certeza de que deseja remover este caminhão?", 
+        "Confirmação de exclusão", 
+        JOptionPane.YES_NO_OPTION
+    );
+
+    if (confirmacao == JOptionPane.YES_OPTION) {
+        // Chama o DAO para remover o caminhão
+        CaminhaoDAO caminhaoDAO = new CaminhaoDAO();
+        boolean sucesso = caminhaoDAO.remover(id);
+
+        if (sucesso) {
+            JOptionPane.showMessageDialog(this, "Caminhão removido com sucesso!");
+            carregarTabelaCaminhoes(); // Atualiza a tabela
+        } else {
+            JOptionPane.showMessageDialog(this, "Erro ao remover o caminhão!", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void tbMotoristasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbMotoristasMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_tbMotoristasMouseClicked
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -191,6 +297,8 @@ public class TelaCaminhao extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblCaminhao;
     private javax.swing.JTable tbMotoristas;

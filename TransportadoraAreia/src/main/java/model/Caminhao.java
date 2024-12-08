@@ -10,7 +10,7 @@ public class Caminhao {
 // atributos
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @OneToOne
     @JoinColumn(name = "motorista_id") // Coluna na tabela Caminhao que referencia Motorista    
@@ -31,11 +31,11 @@ public class Caminhao {
     }
     
 // getters e setters
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
