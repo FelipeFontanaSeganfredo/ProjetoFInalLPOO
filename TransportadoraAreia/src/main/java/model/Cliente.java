@@ -22,7 +22,7 @@ public class Cliente extends Pessoa{
 // método toString
     @Override
     public String toString() {
-        return super.toString() + "Cliente{" + "cnpj=" + cnpj + '}';
+        return super.toString();
     }
    
 }

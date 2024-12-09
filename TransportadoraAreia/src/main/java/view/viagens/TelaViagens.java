@@ -4,6 +4,12 @@
  */
 package view.viagens;
 
+import dao.ViagemDAO;
+import jakarta.persistence.EntityManager;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import model.Viagem;
+
 /**
  *
  * @author User
@@ -15,7 +21,37 @@ public class TelaViagens extends javax.swing.JFrame {
      */
     public TelaViagens() {
         initComponents();
+        mostrarTabela();
     }
+    
+    private void mostrarTabela() {
+    // Obter o EntityManager e o DAO
+    ViagemDAO viagemDAO = new ViagemDAO();
+
+    // Buscar as viagens
+    List<Viagem> listaViagens = viagemDAO.listarTodas();
+
+    // Modelo da tabela
+    DefaultTableModel modeloTabela = (DefaultTableModel) jTable1.getModel();
+
+    // Limpar os dados existentes na tabela
+    modeloTabela.setRowCount(0);
+
+    // Preencher a tabela com os dados das viagens
+    for (Viagem viagem : listaViagens) {
+        modeloTabela.addRow(new Object[]{
+            viagem.getId(),
+            viagem.getDestino() != null ? viagem.getDestino().getNome() : "N/A", // Nome do destino
+            viagem.getCarga() != null ? viagem.getCarga().getId() : "N/A", // Descrição da carga
+            viagem.getCliente() != null ? viagem.getCliente().getNome() : "N/A", // Nome do cliente
+            viagem.getMotorista() != null ? viagem.getMotorista().getNome() : "N/A", // Nome do motorista
+            viagem.getValor(), // Valor da viagem
+            viagem.getDestino() != null ? viagem.getDestino().getDistancia() : "N/A" // Distância
+        });
+        }
+
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -27,60 +63,80 @@ public class TelaViagens extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        BotaoExcluir = new javax.swing.JButton();
+        BotaoEditar = new javax.swing.JButton();
+        BotaoNovo = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Viagens");
+        jLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        jButton1.setText("jButton1");
-
-        jButton2.setText("jButton2");
-
-        jButton3.setText("jButton3");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        BotaoExcluir.setText("Excluir");
+        BotaoExcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                BotaoExcluirActionPerformed(evt);
+            }
+        });
+
+        BotaoEditar.setText("Editar");
+        BotaoEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotaoEditarActionPerformed(evt);
+            }
+        });
+
+        BotaoNovo.setText("Novo");
+        BotaoNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotaoNovoActionPerformed(evt);
             }
         });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Local de destino", "Carga", "Cliente", "Motorista", "Valor", "Distância"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Double.class, java.lang.Object.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addComponent(jScrollPane1)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 139, Short.MAX_VALUE)
-                        .addComponent(jButton3)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 560, Short.MAX_VALUE)
+                        .addComponent(BotaoNovo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2)
+                        .addComponent(BotaoEditar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1)
-                        .addContainerGap())
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                        .addComponent(BotaoExcluir)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -89,20 +145,88 @@ public class TelaViagens extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(85, Short.MAX_VALUE))
+                    .addComponent(BotaoExcluir)
+                    .addComponent(BotaoEditar)
+                    .addComponent(BotaoNovo))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void BotaoNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoNovoActionPerformed
+        TelaViagensNovo NovaTela = new TelaViagensNovo();
+        
+        NovaTela.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                mostrarTabela(); // Atualiza a tabela ao fechar a tela de adição
+            }
+        });
+        
+        NovaTela.setVisible(true);
+    }//GEN-LAST:event_BotaoNovoActionPerformed
+
+    private void BotaoExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoExcluirActionPerformed
+        int linhaSelecionada = jTable1.getSelectedRow();
+
+        if (linhaSelecionada != -1) {
+            // Obtém o ID da linha selecionada
+            Object valorId = jTable1.getValueAt(linhaSelecionada, 0);
+
+            if (valorId instanceof Number) {
+                Long id = ((Number) valorId).longValue();
+
+                ViagemDAO service = new ViagemDAO();
+                Viagem item = service.buscarPorId(id); // Busca o cliente pelo ID
+
+                if (item != null) {
+                    service.excluir(item); // Exclui o cliente do banco
+                    javax.swing.JOptionPane.showMessageDialog(this, "Viagem excluída com sucesso!");
+                    mostrarTabela(); // Atualiza os dados exibidos na tabela
+                } else {
+                    javax.swing.JOptionPane.showMessageDialog(this, "Viagem não encontrado.");
+                }
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "ID inválido.");
+            }
+            } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Selecione uma viagem para excluir.");
+    }
+    }//GEN-LAST:event_BotaoExcluirActionPerformed
+
+    private void BotaoEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoEditarActionPerformed
+        
+        int linhaSelecionada = jTable1.getSelectedRow();
+
+        if (linhaSelecionada != -1) {
+            // Obtém o ID da linha selecionada
+            Object valorId = jTable1.getValueAt(linhaSelecionada, 0);
+
+            if (valorId instanceof Integer) {
+                Integer id = (Integer) valorId;
+
+                // Abre a tela de edição, passando o ID selecionado
+                TelaViagensEditar telaEditar = new TelaViagensEditar(id);
+
+                // Adiciona um evento para atualizar a tabela quando a tela de edição for fechada
+                telaEditar.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosed(java.awt.event.WindowEvent e) {
+                        mostrarTabela(); // Atualiza a tabela ao fechar a tela de edição
+                    }
+                });
+
+                telaEditar.setVisible(true);
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "ID inválido.");
+            }
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Selecione uma viagem para editar.");
+        }
+    }//GEN-LAST:event_BotaoEditarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -140,9 +264,9 @@ public class TelaViagens extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton BotaoEditar;
+    private javax.swing.JButton BotaoExcluir;
+    private javax.swing.JButton BotaoNovo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;

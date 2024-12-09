@@ -50,7 +50,7 @@ public class Destino {
 
     @Override
     public String toString() {
-        return "Destino{" + "id=" + id + ", nome=" + nome + ", distancia=" + distancia + '}';
+        return nome;
     }
     
     

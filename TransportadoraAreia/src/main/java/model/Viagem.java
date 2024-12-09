@@ -12,6 +12,15 @@ public class Viagem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private Double valor;
+    private Double distancia;
+
+    public void setDistancia(Double distancia) {
+        this.distancia = distancia;
+    }
+
+    public Double getDistancia() {
+        return distancia;
+    }
 
     public void setValor(Double valor) {
         this.valor = valor;

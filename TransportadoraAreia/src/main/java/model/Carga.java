@@ -41,9 +41,11 @@ public class Carga {
     }
 
 // toString
+
     @Override
     public String toString() {
-        return "Carga{" + "id=" + id + ", peso=" + peso + ", volume=" + volume + '}';
+        return Integer.toString(id);
     }
+    
     
 }

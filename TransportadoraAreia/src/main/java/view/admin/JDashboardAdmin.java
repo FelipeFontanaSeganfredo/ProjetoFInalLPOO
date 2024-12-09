@@ -12,6 +12,8 @@ import view.home.JMinhasInformacoes;
 import view.clientes.JPainelClientesAdmin;
 import view.destino.JPainelDestinoAdmin;
 import view.motorista.TelaMotorista;
+import view.viagens.TelaViagens;
+import view.viagens.TelaViagensNovo;
 
 /**
  *
@@ -70,6 +72,11 @@ public class JDashboardAdmin extends javax.swing.JFrame {
         });
 
         btnViagens.setText("Viagens");
+        btnViagens.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViagensActionPerformed(evt);
+            }
+        });
 
         btnEstoque.setText("Estoque");
         btnEstoque.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -233,6 +240,11 @@ public class JDashboardAdmin extends javax.swing.JFrame {
         JPainelDestinoAdmin TelaDestino = new JPainelDestinoAdmin();
         TelaDestino.setVisible(true);
     }//GEN-LAST:event_btnDestinosActionPerformed
+
+    private void btnViagensActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViagensActionPerformed
+        TelaViagens TelaViagens = new TelaViagens();
+        TelaViagens.setVisible(true);
+    }//GEN-LAST:event_btnViagensActionPerformed
 
     /**
      * @param args the command line arguments

@@ -60,7 +60,7 @@ public abstract class Pessoa {
 // método toString
     @Override
     public String toString() {
-        return "Pessoa{" + "id=" + id + ", nome=" + nome + ", dataNascimento=" + dataNascimento + ", email=" + email + ", telefone=" + telefone + '}';
+        return nome;
     }
     
 }
