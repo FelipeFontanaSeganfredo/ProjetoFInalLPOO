@@ -45,15 +45,17 @@ public class TelaViagensEditar extends javax.swing.JFrame {
     viagemAtual = dao.buscarPorId((long) viagemId);
     
     if (viagemAtual != null) {
-        // Carregar os motoristas
+        
+        CampoMotorista.addItem(null);
         MotoristaDAO motoristaDAO = new MotoristaDAO();
         List<Motorista> motoristas = motoristaDAO.listarTodos();
         for (Motorista motorista : motoristas) {
-            CampoMotorista.addItem(motorista); // Motorista deve ter o método toString implementado
+            CampoMotorista.addItem(motorista);
         }
-        CampoMotorista.setSelectedItem(viagemAtual.getMotorista()); // Selecionar o motorista da viagem atual
+        CampoMotorista.setSelectedItem(viagemAtual.getMotorista()); 
 
         // Carregar os clientes
+        CampoCliente.addItem(null);
         ClienteService clienteDAO = new ClienteService();
         List<Cliente> clientes = clienteDAO.listarTodos();
         for (Cliente cliente : clientes) {
@@ -62,6 +64,7 @@ public class TelaViagensEditar extends javax.swing.JFrame {
         CampoCliente.setSelectedItem(viagemAtual.getCliente());
         
         // Carregar destinos
+        CampoDestino.addItem(null);
         DestinoDAO destinoDAO = new DestinoDAO();
         List<Destino> destinos = destinoDAO.listarTodos();
         for (Destino destino: destinos){
@@ -70,6 +73,7 @@ public class TelaViagensEditar extends javax.swing.JFrame {
         CampoDestino.setSelectedItem(viagemAtual.getDestino());
         
         // Carregar carga
+        CampoCarga.addItem(null);
         CargaDAO cargaDAO = new CargaDAO();
         List<Carga> cargas = cargaDAO.listarTodos();
         for (Carga carga: cargas)
@@ -275,12 +279,43 @@ public class TelaViagensEditar extends javax.swing.JFrame {
 
     private void BotaoSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoSalvarActionPerformed
         try {
+        // Validar campos obrigatórios
+        if (CampoMotorista.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(this, "Selecione um motorista.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (CampoCliente.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(this, "Selecione um cliente.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (CampoDestino.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(this, "Selecione um destino.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (CampoCarga.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(this, "Selecione uma carga.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (CampoValor.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Insira um valor para a viagem.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Validar e converter o campo de valor
+        double valor;
+        try {
+            valor = Double.parseDouble(CampoValor.getText().trim());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "O valor deve ser um número válido.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         // Atualizar os valores da viagem
         viagemAtual.setMotorista((Motorista) CampoMotorista.getSelectedItem());
         viagemAtual.setCliente((Cliente) CampoCliente.getSelectedItem());
         viagemAtual.setDestino((Destino) CampoDestino.getSelectedItem());
         viagemAtual.setCarga((Carga) CampoCarga.getSelectedItem());
-        viagemAtual.setValor(Double.parseDouble(CampoValor.getText()));
+        viagemAtual.setValor(valor);
 
         // Atualizar no banco de dados
         dao.atualizar(viagemAtual);
@@ -290,10 +325,10 @@ public class TelaViagensEditar extends javax.swing.JFrame {
 
         // Fechar a janela após salvar (opcional)
         this.dispose();
-        } catch (Exception e) {
-            // Mostrar mensagem de erro
-            JOptionPane.showMessageDialog(this, "Erro ao salvar a viagem: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-        }
+    } catch (Exception e) {
+        // Mostrar mensagem de erro
+        JOptionPane.showMessageDialog(this, "Erro ao salvar a viagem: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_BotaoSalvarActionPerformed
 
     /**
